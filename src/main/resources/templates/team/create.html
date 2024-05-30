@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+    <title>팀플방 생성</title>
+    <style>
+        body {
+            font-family: NanumSquareNeo, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #0277bd;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #64d8ff;
+            border-radius: 3px;
+            background-color: #f6ffff;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #64d8ff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #4db8ff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>팀플방 생성</h2>
+    <form action="/team/create" method="post">
+        <label for="teamName">팀플방 이름을 입력해주세요:</label>
+        <input type="text" id="teamName" name="teamName" required>
+        <input type="submit" value="팀플방 생성">
+    </form>
+</div>
+</body>
+</html>

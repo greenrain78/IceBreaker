@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+    <title>프로필 수정</title>
+    <style>
+        body {
+            font-family: NanumSquareNeo, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0277bd;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #64d8ff;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f6ffff;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .interests {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .interests label {
+            margin-right: 15px;
+        }
+
+        .interest-heading {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #64d8ff;
+            color: #ffffff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4db8ff;
+        }
+    </style>
+</head>
+<body>
+<h2>프로필 수정</h2>
+<form action="/user/edit" method="post" onsubmit="return validateForm()">
+    <div>
+        <label for="userId">아이디:</label>
+        <input type="text" id="userId" name="userId" th:value="${user.userId}" readonly>
+    </div>
+    <div>
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" th:value="${user.password}" required>
+    </div>
+    <div>
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" th:value="${user.name}" required>
+    </div>
+    <div>
+        <label for="department">학과:</label>
+        <input type="text" id="department" name="department" th:value="${user.department}" required>
+    </div>
+    <div>
+        <label for="studentId">학번:</label>
+        <input type="text" id="studentId" name="studentId" th:value="${user.studentId}" required>
+    </div>
+
+    <p class="interest-heading">관심있는 대화주제를 최대 3개 선택하세요:</p>
+    <div class="interests">
+        <label><input type="checkbox" name="interests" value="sports"
+                      th:checked="${#arrays.contains(user.interests, 'sports')}"> 스포츠</label>
+        <label><input type="checkbox" name="interests" value="movies/drama"
+                      th:checked="${#arrays.contains(user.interests, 'movies/drama')}"> 영화/드라마</label>
+        <label><input type="checkbox" name="interests" value="music"
+                      th:checked="${#arrays.contains(user.interests, 'music')}"> 노래</label>
+        <label><input type="checkbox" name="interests" value="games"
+                      th:checked="${#arrays.contains(user.interests, 'games')}"> 게임</label>
+        <label><input type="checkbox" name="interests" value="trip"
+                      th:checked="${#arrays.contains(user.interests, 'trip')}"> 여행</label>
+        <label><input type="checkbox" name="interests" value="eating"
+                      th:checked="${#arrays.contains(user.interests, 'eating')}"> 음식</label>
+        <label><input type="checkbox" name="interests" value="love"
+                      th:checked="${#arrays.contains(user.interests, 'love')}"> 연애</label>
+        <label><input type="checkbox" name="interests" value="pet"
+                      th:checked="${#arrays.contains(user.interests, 'pet')}"> 반려동물</label>
+        <label><input type="checkbox" name="interests" value="balanceGame"
+                      th:checked="${#arrays.contains(user.interests, 'balanceGame')}"> 밸런스게임</label>
+        <label><input type="checkbox" name="interests" value="if"
+                      th:checked="${#arrays.contains(user.interests, 'if')}"> 망상(IF)</label>
+    </div>
+    <button type="submit">수정하기</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.interests input[type="checkbox"]');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const checkedCount = document.querySelectorAll('.interests input[type="checkbox"]:checked').length;
+                    if (checkedCount > 3) {
+                        checkbox.checked = false;
+                        alert("최대 3개의 대화주제를 선택할 수 있습니다.");
+                    }
+                });
+            });
+        });
+
+        function validateForm() {
+            const checkCount = document.querySelectorAll('.interests input[type="checkbox"]:checked').length;
+            if (checkCount === 0) {
+                alert("1개 이상의 대화주제를 선택하세요.");
+                return false;
+            }
+        }
+    </script>
+</form>
+</body>
+</html>

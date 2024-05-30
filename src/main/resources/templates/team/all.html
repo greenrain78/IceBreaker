@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+    <title>팀플방 찾기</title>
+    <style>
+        body {
+            font-family: NanumSquareNeo, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0277bd;
+        }
+
+        .team-list {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        .team-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border: 1px solid #b3e5fc;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .team-item:hover {
+            background-color: #b3e5fc;
+        }
+
+        .team-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #01579b;
+        }
+
+        .enter-button {
+            background-color: #64d8ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .enter-button:hover {
+            background-color: #00acc1;
+        }
+
+        /* 나가기 버튼 스타일 */
+        .exit-button {
+            background-color: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .exit-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+<h2>팀플방 찾기</h2>
+<div class="team-list">
+    <!-- 서버로부터 받은 모든 팀 목록을 반복하여 화면에 표시합니다 -->
+    <ul>
+        <li th:each="team : ${allTeams}" class="team-item">
+            <span class="team-name" th:text="${team.teamName}"></span>
+            <a th:href="@{'/chat/' + ${team.id}}" class="enter-button">입장</a>
+        </li>
+    </ul>
+
+    <!-- 나가기 버튼 추가 -->
+    <form action="/" method="get">
+        <button type="submit" class="exit-button">나가기</button>
+    </form>
+</div>
+</body>
+</html>
