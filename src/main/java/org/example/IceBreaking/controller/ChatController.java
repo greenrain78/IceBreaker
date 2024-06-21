@@ -80,7 +80,7 @@ public class ChatController {
     @GetMapping("/api/question/gpt/{teamId}")
     @ResponseBody
     public ResponseEntity<String> showGptQuestion(@PathVariable("teamId") int teamId) {
-        String question = "GPT 질문입니다.";
+        String question = "GPT 질문입니다." + questionRepository.findAllInterestsByTeam(teamId);
         return new ResponseEntity<>(question, HttpStatus.OK);
     }
 }

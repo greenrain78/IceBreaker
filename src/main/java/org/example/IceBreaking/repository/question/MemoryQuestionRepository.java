@@ -103,4 +103,8 @@ public class MemoryQuestionRepository implements QuestionRepository {
 
         return new Question(selectQuestion);
     }
+    @Override
+    public Map<String, Integer> findAllInterestsByTeam(int teamId) {
+        return teamInterestsCountMap.get(teamId);
+    }
 }
