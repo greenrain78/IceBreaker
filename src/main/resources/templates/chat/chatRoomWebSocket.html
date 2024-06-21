@@ -211,6 +211,7 @@
         <div class="buttons-container">
             <button type="button" class="ask-question" id="btnWelcomeQuestion" style="display: none">팀원 전화번호 요청</button>
             <button type="button" class="ask-question" id="btnQuestion" style="display: none">질문생성</button>
+            <button type="button" class="ask-question" id="btnGptQuestion" style="display: none">GPT 질문생성</button>
         </div>
     </div>
 
@@ -244,6 +245,7 @@
     if (userId === teamCreatorId) {
         document.getElementById('btnWelcomeQuestion').style.display = 'inline-block';
         document.getElementById('btnQuestion').style.display = 'inline-block';
+        document.getElementById('btnGptQuestion').style.display = 'inline-block';
     }
 
     const onConnected = async () => {
@@ -345,6 +347,19 @@
             message: response.data.question
         }));
     };
+    // GPT 질문 생성
+    const gptQuestionBtn = document.querySelector('button#btnGptQuestion');
+    gptQuestionBtn.addEventListener('click', async function () {
+        const url = `/api/question/gpt/${teamId}`;
+        const response = await axios.get(url);
+        console.log(response.data);
+
+        stompClient.send("/pub/chat/question", {}, JSON.stringify({
+            teamId: teamId,
+            message: response.data
+        }));
+    });
+
 
     const welcomeQuestionBtn = document.querySelector('button#btnWelcomeQuestion');
     welcomeQuestionBtn.addEventListener('click', askWelcomeQuestion);
