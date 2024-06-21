@@ -11,6 +11,7 @@ import org.example.IceBreaking.repository.chat.ChatRepository;
 import org.example.IceBreaking.repository.question.QuestionRepository;
 import org.example.IceBreaking.repository.team.TeamRepository;
 import org.example.IceBreaking.repository.user.UserRepository;
+import org.example.IceBreaking.service.GptService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -29,7 +31,8 @@ public class ChatController {
     private final HttpSession httpSession;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
-    private final AppEnvConfig appEnv;
+    private final GptService gptService;
+
     private int QuestionIndex = 0;
 
     @GetMapping("/chat/{teamId}")
@@ -82,8 +85,15 @@ public class ChatController {
     @GetMapping("/api/question/gpt/{teamId}")
     @ResponseBody
     public ResponseEntity<String> showGptQuestion(@PathVariable("teamId") int teamId) {
-        String question = "GPT 질문입니다." + questionRepository.findAllInterestsByTeam(teamId) + "에 대한 질문";
-        question += "API_KEY = " + appEnv.getApiKey();
+        Map<String, Integer> interests = questionRepository.findAllInterestsByTeam(teamId);
+        if (interests.isEmpty()) {
+            return new ResponseEntity<>("", HttpStatus.OK);
+        }
+        String prompt = "가중치에 따라 알맞는 주제에 대한 질문을 생성해\n" +
+                "사람들이 더 많이 공감하고 대화를 많이 할 수 있는 흥미로운 질문으로 작성해\n" +
+                "가중치: " + interests + "\n" +
+                "답변은 1~3문장으로 작성하고 답변 이외의 내용은 대답하지마";
+        String question = gptService.getGptResponse(prompt);
         return new ResponseEntity<>(question, HttpStatus.OK);
     }
 }
