@@ -2,6 +2,7 @@ package org.example.IceBreaking.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.IceBreaking.config.AppEnvConfig;
 import org.example.IceBreaking.domain.Question;
 import org.example.IceBreaking.domain.Team;
 import org.example.IceBreaking.domain.User;
@@ -28,6 +29,7 @@ public class ChatController {
     private final HttpSession httpSession;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private final AppEnvConfig appEnv;
     private int QuestionIndex = 0;
 
     @GetMapping("/chat/{teamId}")
@@ -80,7 +82,8 @@ public class ChatController {
     @GetMapping("/api/question/gpt/{teamId}")
     @ResponseBody
     public ResponseEntity<String> showGptQuestion(@PathVariable("teamId") int teamId) {
-        String question = "GPT 질문입니다." + questionRepository.findAllInterestsByTeam(teamId);
+        String question = "GPT 질문입니다." + questionRepository.findAllInterestsByTeam(teamId) + "에 대한 질문";
+        question += "API_KEY = " + appEnv.getApiKey();
         return new ResponseEntity<>(question, HttpStatus.OK);
     }
 }
