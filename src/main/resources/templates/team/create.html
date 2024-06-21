@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@500&display=swap" rel="stylesheet">
     <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
     <title>팀플방 생성</title>
     <style>
@@ -23,38 +25,55 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             width: 90%;
             max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            min-height: auto;
+
         }
         h2 {
+            margin-top: 10;
             text-align: center;
-            color: #0277bd;
+            color: #000;
         }
         form {
             display: flex;
             flex-direction: column;
+            justify-content: start;
+
         }
         label {
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #333;
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 15px;
+            color: #000;
+            text-align: left;
+            display: block;
         }
         input[type="text"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #64d8ff;
-            border-radius: 3px;
-            background-color: #f6ffff;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #e4e4e4;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
         input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #64d8ff;
+            padding: 16px 0;
+            background-color: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
             color: #fff;
             border: none;
-            border-radius: 3px;
+            border-radius: 15px;
+            font-size: 15px;
+            font-family: 'Gmarket Sans';
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 400px;
         }
         input[type="submit"]:hover {
-            background-color: #4db8ff;
+            background-color: #555555;
         }
     </style>
 </head>
@@ -63,8 +82,8 @@
     <h2>팀플방 생성</h2>
     <form action="/team/create" method="post">
         <label for="teamName">팀플방 이름을 입력해주세요:</label>
-        <input type="text" id="teamName" name="teamName" required>
-        <input type="submit" value="팀플방 생성">
+        <input type="text" id="teamName" name="teamName" placeholder="팀플방 이름을 입력해주세요" required>
+        <input type="submit" value="완료">
     </form>
 </div>
 </body>

@@ -12,82 +12,108 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+
         }
 
         h1 {
-            color: #0056b3;
+
+            margin-top: 96px;
+            margin-bottom: 12px;
             text-align: center;
-            margin-bottom: 20px;
+            color: #000;
         }
 
         p {
-            color: #333;
+            color: #C62828;
+            font-weight: bold;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            margin-top; 40px;
+            font-size: 13px;
         }
 
         form {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
         }
 
         label {
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-top: 18px;
+            margin-bottom: 4px;
             display: block;
+            color: #333;
         }
 
-        input[type="text"],
-        input[type="password"] {
+        input[type="text"]{
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #64d8ff;
+            padding: 15px;
+            border: 1px solid #e4e4e4;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 16px;
-            background-color: #f6ffff;
+        }
+        input[type="password"] {
+            width: 100%;
+             padding: 15px;
+
+            border: 1px solid #e4e4e4;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
         button[type="submit"] {
             width: 100%;
-            background-color: #64d8ff;
-            color: #ffffff;
+            background-color: #0a0a0a;
+            color: #fff;
             padding: 12px;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 15px;
+            font-size: 15px;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
+            margin-top: 19px;
+            margin-bottom: 398px;
 
+
+        }
         button[type="submit"]:hover {
-            background-color: #4db8ff;
+            background-color: #555555;
         }
     </style>
 </head>
 <body>
-<div>
-    <h1>로그인 실패</h1>
-    <p>유효하지 않은 회원정보입니다. 다시 시도해주세요!</p>
+<div class="container">
+    <h1>로그인</h1>
+
     <!-- 로그인 폼 -->
     <form action="/login" method="post">
-        <div>
+
             <label for="userId">아이디:</label>
-            <input type="text" id="userId" name="userId" required>
-        </div>
-        <div>
+            <input type="text" id="userId" name="userId" placeholder="아이디를 입력해 주세요" required>
+
+
             <label for="password">비밀번호:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력해 주세요" required>
+
+
+        <p>유효하지 않은 회원정보입니다. 다시 시도해주세요!</p>
         <button type="submit">로그인</button>
     </form>
 </div>

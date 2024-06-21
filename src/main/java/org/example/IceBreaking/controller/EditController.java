@@ -35,7 +35,7 @@ public class EditController {
 
         // 세션 정보 update
         httpSession.setAttribute("loginedUser", editUser);
-
+        
         // 수정 정보 확인
         System.out.println("editUser.get().getUserId() = " + editUser.getUserId());
         System.out.println("editUser.get().getPassword() = " + editUser.getPassword());
@@ -43,7 +43,7 @@ public class EditController {
         System.out.println("editUser.get().getDepartment() = " + editUser.getDepartment());
         System.out.println("editUser.get().getStudentId() = " + editUser.getStudentId());
         System.out.println("Arrays.toString(editUser.getInterests()) = " + Arrays.toString(editUser.getInterests()));
-        
+
         return "redirect:/";            // 홈화면으로 redirect
     }
 }

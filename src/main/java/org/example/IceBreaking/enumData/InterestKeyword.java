@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum InterestKeyword {
 
     SPORTS("sports"),
-    MOVIESANDDRAMA("movies/drama"),
+    MOVIESANDDRAMA("moviesAndDrama"),
     MUSIC("music"),
     GAMES("games"),
     TRIP("trip"),

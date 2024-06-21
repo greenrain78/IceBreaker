@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebSocketMessageDto {
+    // 웹 소켓으로 주고받는 message dto
+
     private int teamId;
     private String userId;
     private String userName;

@@ -9,5 +9,5 @@ public interface QuestionRepository {
 
     void saveInterestsByTeam(UserInterestDto userInterestDto);
 
-    Question findQuestionByTeamInterests(int teamId);
+    Question findQuestionByTeamInterests(int teamId, int questionIndex);
 }

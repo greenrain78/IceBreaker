@@ -7,14 +7,15 @@
     <style>
         body {
             font-family: NanumSquareNeo, sans-serif;
+            background-color: #f2f2f2;
             margin: 0;
             padding: 0;
-            background-color: #e0f7fa;
         }
 
         h2 {
             text-align: center;
-            color: #0277bd;
+            color: #000;
+            margin-top: 20px;
         }
 
         .team-list {
@@ -24,16 +25,30 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 600px;
+            background: linear-gradient(180deg, rgba(100, 216, 255, 0.4) 0%, rgba(199, 241, 255, 0.4) 100%);
+
+        }
+
+        .exit-button-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
         }
 
         .team-item {
             margin-bottom: 10px;
             padding: 10px;
-            background-color: #e0f7fa;
+            background-color: #fff;
             border: 1px solid #b3e5fc;
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-rignt: 100px;
         }
 
         .team-item:hover {
@@ -46,29 +61,28 @@
             color: #01579b;
         }
 
-        .enter-button {
-            background-color: #64d8ff;
-            color: #fff;
+        .enter-button, .exit-button {
+            padding: 5px 10px;
             border: none;
             border-radius: 5px;
-            padding: 5px 10px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+        }
+
+        .enter-button {
+            background-color: #000;
+            color: #fff;
+            border-radius: 50px;
+
         }
 
         .enter-button:hover {
             background-color: #00acc1;
         }
 
-        /* 나가기 버튼 스타일 */
         .exit-button {
-            background-color: #ff4444;
+            background-color: #000000;
             color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         .exit-button:hover {
@@ -77,8 +91,16 @@
     </style>
 </head>
 <body>
-<h2>팀플방 찾기</h2>
 <div class="team-list">
+    <!-- 나가기 버튼 추가 -->
+    <div class="exit-button-container">
+        <h2>팀플방 찾기</h2>
+
+        <form action="/" method="get">
+            <button type="submit" class="exit-button">나가기</button>
+        </form>
+    </div>
+
     <!-- 서버로부터 받은 모든 팀 목록을 반복하여 화면에 표시합니다 -->
     <ul>
         <li th:each="team : ${allTeams}" class="team-item">
@@ -86,11 +108,6 @@
             <a th:href="@{'/chat/' + ${team.id}}" class="enter-button">입장</a>
         </li>
     </ul>
-
-    <!-- 나가기 버튼 추가 -->
-    <form action="/" method="get">
-        <button type="submit" class="exit-button">나가기</button>
-    </form>
 </div>
 </body>
 </html>

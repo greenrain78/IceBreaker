@@ -28,6 +28,7 @@ public class ChatController {
     private final HttpSession httpSession;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private int QuestionIndex = 0;
 
     @GetMapping("/chat/{teamId}")
     public String showChatRoom(@PathVariable("teamId") int teamId, Model model) {
@@ -71,7 +72,16 @@ public class ChatController {
     @GetMapping("/api/question/{teamId}")
     @ResponseBody
     public ResponseEntity<Question> showQuestion(@PathVariable("teamId") int teamId) {
-        Question question = questionRepository.findQuestionByTeamInterests(teamId);
+
+        Question question = questionRepository.findQuestionByTeamInterests(teamId, QuestionIndex++);
+        return new ResponseEntity<>(question, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/question/gpt/{teamId}")
+    @ResponseBody
+    public ResponseEntity<Question> showGptQuestion(@PathVariable("teamId") int teamId) {
+
+        Question question = questionRepository.findQuestionByTeamInterests(teamId, QuestionIndex++);
         return new ResponseEntity<>(question, HttpStatus.OK);
     }
 }
