@@ -3,7 +3,7 @@
 
 ## run
 ```shell
-sh run.sh
+sudo ./gradlew bootRun
 ```
 ## stop
 ```shell
