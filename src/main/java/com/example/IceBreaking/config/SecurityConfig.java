@@ -1,11 +1,13 @@
 package com.example.IceBreaking.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +28,7 @@ public class SecurityConfig {
 
         // 인가
         http.authorizeHttpRequests((auth) -> auth
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico").permitAll() // 정적 리소스 접근 허용
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // swagger 접근 허용
                 .requestMatchers("/h2-console/**").permitAll() // h2-console 접근 허용
                 .requestMatchers("/", "login", "/sign-up",  "/loginProc", "/join", "/joinProc").permitAll() // 로그인, 회원가입 페이지 접근 허용
