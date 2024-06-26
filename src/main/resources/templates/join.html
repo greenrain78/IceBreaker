@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+    <title>회원가입</title>
+    <style>
+        body {
+            font-family: NanumSquareNeo, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            margin-top: 20px;
+            margin-right: 280px;
+            text-align: center;
+            color: #000;
+        }
+
+        form {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        label2 {
+            font-weight: bold;
+            margin-left: 20px;
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            margin-left: 20px;
+            width: 90%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #595959;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .interests {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .interests label {
+            margin-right: 15px;
+        }
+
+        .interest-heading {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            margin-left: 20px;
+        }
+
+        input[type="submit"] {
+            font-family: NanumSquareNeo, sans-serif;
+            width: 100%;
+            background-color: #0a0a0a;
+            color: #fff;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #555555;        }
+
+        button#checkUserIdBtn {
+            font-family: NanumSquareNeo, sans-serif;
+            margin-left: 25px;
+            background-color: #0a0a0a;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 25px;
+        }
+
+        button#checkUserIdBtn:hover {
+            background-color: #555555;
+        }
+
+
+
+        .chip {
+            display: flex;
+            align-items: center;
+            background-color: #FFFFFF;
+            border: 2px solid #595959;
+            border-radius: 25px;
+            padding: 5px 15px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-top: 5px;
+
+
+
+        }
+
+        .chip.selected {
+            border: 2px solid #64D8FF;
+            background-color: #64D8FF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<form action="/joinProc" method="post" name="joinForm">
+    <h2>회원가입</h2>
+
+    <label2 for="userId">아이디:</label2>
+    <input type="text" name="username" placeholder="Username" required/>
+
+    <label2 for="password">비밀번호:</label2>
+    <input type="password" name="password" placeholder="Password"/>
+
+<!--    <label2 for="name">이름:</label2>-->
+<!--    <input type="text" id="name" name="name" required>-->
+
+<!--    <label2 for="department">이메일:</label2>-->
+<!--    <input type="text" id="email" name="email" required>-->
+
+    <input type="submit" value="가입"/>
+
+
+</form>
+</body>
+</html>

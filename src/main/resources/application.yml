@@ -1,0 +1,27 @@
+
+spring:
+  application:
+    name: IceBreaking
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./data/demo
+    username: sa
+    password: sa
+    # H2 Console 설정
+  h2:
+    console: # H2 DB를 웹에서 관리할 수 있는 기능
+      enabled: true           # H2 Console 사용 여부
+      path: /h2-console       # H2 Console 접속 주소
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update  # 테이블 생성 전략 - update: 테이블이 없을 때만 생성
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true      # 쿼리 로그 포맷 (정렬)
+        show_sql: true        # 쿼리 로그 출력
+
+server:
+  port: 8080

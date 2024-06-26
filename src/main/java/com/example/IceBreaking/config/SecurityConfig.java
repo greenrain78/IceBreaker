@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -18,10 +19,16 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        // h2-console 접근을 위한 설정
+        http.headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+        );
+
         // 인가
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // swagger-ui, api-docs에 대해 접근 허용
-                .requestMatchers("/", "login", "/sign-up",  "/loginProc").permitAll() // /, login, sign-up에 대해 접근 허용
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // swagger 접근 허용
+                .requestMatchers("/h2-console/**").permitAll() // h2-console 접근 허용
+                .requestMatchers("/", "login", "/sign-up",  "/loginProc", "/join", "/joinProc").permitAll() // 로그인, 회원가입 페이지 접근 허용
                 .requestMatchers("/admin").hasRole("ADMIN") // ADMIN 권한을 가진 유저에 대해 접근 허용
                 .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER") // ADMIN, USER 권한을 가진 유저에 대해 접근 허용
                 .anyRequest().authenticated()   // 모든 요청에 대해 인증을 요구
