@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head profile="http://www.w3.org/2005/10/profile">
+    <link rel="icon" type="image/png" href="http://example.com/myicon.png">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈</title>
+    <style>
+        body {
+            font-family: NanumSquareNeo, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        .logo {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .top-buttons a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-buttons a:hover {
+            color: #64d8ff;
+            background-color: #e0f7fa;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0277bd;
+            padding: 20px 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #000;
+            font-size: 14px;
+        }
+
+        .buttons-bottom {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .buttons-bottom a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: Gmarket Sans;
+            font-weight: 400;
+            letter-spacing: 0.02px;
+            padding: 16px 40px;
+            background-color: #0A0A0A;
+            border-radius: 15px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons-bottom a:hover {
+            background-color: #333333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .main-image {
+            max-width: 100%;
+            width: 360px;
+            margin: 20px 0;
+        }
+
+        .entered-teams {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .entered-teams-title {
+            text-align: center;
+            color: #00796b;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .entered-teams a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: Gmarket Sans;
+            font-weight: 400;
+            letter-spacing: 0.02px;
+            padding: 16px 20px;
+            background-color: #00796b;
+            border-radius: 15px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .entered-teams a:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+
+<img src="/logo.png" alt="Logo" class="logo">
+
+<div class="top-buttons">
+    <!-- 세션에 로그인 정보가 있을 때 -->
+    <a th:if="${session.loginedUser}" href="/logout">로그아웃</a>
+    <a th:if="${session.loginedUser}" href="/user/showEdit">프로필 수정</a>
+    <!-- 세션에 로그인 정보가 없을 때 -->
+    <a th:unless="${session.loginedUser}" href="/showLogin">로그인</a>
+    <a th:unless="${session.loginedUser}" href="/showSignup">회원가입</a>
+</div>
+
+<h2>어색한 팀플 시작 얼음깨기와 함께!</h2>
+<p class="subtitle">얼어붙은 마음을 깨는 가장 쉬운 방법</p>
+
+<div class="main-content">
+    <img src="/main image.png" alt="Main image" class="main-image">
+</div>
+
+<div class="entered-teams" th:if="${enteredTeamList}">
+    <p class="entered-teams-title" th:text="${session.loginedUser.name} + '님이 입장한 팀플방 목록'"></p>
+    <a th:each="team : ${enteredTeamList}" th:href="@{/chat/{teamId}(teamId=${team.id})}" th:text="${team.teamName}"></a>
+</div>
+
+<div class="buttons-bottom">
+    <a th:if="${session.loginedUser}" href="/team/showCreateForm">팀플방 생성</a>
+    <a th:if="${session.loginedUser}" href="/team/showAll">팀플방 찾기</a>
+</div>
+
+</body>
+</html>
