@@ -20,4 +20,10 @@ public class HomeController {
         log.info("home controller" + model);
         return "home";
     }
+    @GetMapping("/admin")
+    @Operation(summary = "admin controller")
+    public String admin(Model model) {
+        log.info("admin controller" + model);
+        return "admin";
+    }
 }
