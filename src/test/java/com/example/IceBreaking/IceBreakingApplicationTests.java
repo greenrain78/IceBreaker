@@ -1,4 +1,4 @@
-package org.example.IceBreaking;
+package com.example.IceBreaking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
