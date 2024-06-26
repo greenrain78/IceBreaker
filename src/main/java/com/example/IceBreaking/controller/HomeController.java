@@ -34,6 +34,7 @@ public class HomeController {
 
         model.addAttribute("role", role);
         model.addAttribute("name", authentication.getName());
+        model.addAttribute("name", authentication.getName());
         log.info("home controller" + model);
         return "home";
     }
