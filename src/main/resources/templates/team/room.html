@@ -225,6 +225,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </div>
 
+<script>
+    const getUrlParameter = (name) => new URLSearchParams(window.location.search).get(name);
+    const displayMessage = (message) => {
+        console.log(message);
+        const chatMessages = document.getElementById('chatMessages');
+        const chatAnnouncements = document.getElementById('chatAnnouncements');
+        const newMessage = document.createElement('li');
+        newMessage.classList.add('chat-message');
+        const [datePart, timePart] = message.time.split('T');
+        const [year, month, day] = datePart.split('-');
+        const [hour, minute, second] = timePart.split(':');
+        const secondCleaned = second.split('.')[0];
+        const formattedTime = `${year}-${month}-${day} ${hour}:${minute}:${secondCleaned}`;
+        newMessage.classList.add(message.username === name ? 'user' : 'others');
+        newMessage.innerHTML = `<p class="message-text"><b>${message.username}:</b> ${message.message}</p><span class="message-info">${formattedTime}</span>`;
+        chatMessages.appendChild(newMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+
+
+    }
+    window.onload = async () => {
+        const loadChatMessages = async () => {
+            const teamId = getUrlParameter('room_id');
+            const url = `/chat/show/${teamId}`;
+            const response = await axios.get(url);
+            console.log(response.data);
+
+            response.data.forEach(displayMessage);
+        }
+        await loadChatMessages();
+
+    }
+
+
+    // axios /chat/show 요청으로 채팅 내용을 가져온다.
+
+
+
+</script>
+
 <!--<script>-->
 <!--    let socket = new SockJS("/stomp/chat");-->
 <!--    let stompClient = Stomp.over(socket);-->
@@ -274,6 +315,8 @@
 <!--    }-->
 
 <!--    window.onload = loadChatMessages;-->
+
+
 
 <!--    const sendMessage = () => {-->
 <!--        const msg = document.querySelector('input#msg');-->

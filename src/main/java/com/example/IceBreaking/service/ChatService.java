@@ -17,9 +17,9 @@ public class ChatService {
     public static final int PAGE_SIZE = 10;
 
     @Transactional
-    public void createChat(ChatDTO chatDTO) {
-        ChatEntity chatEntity = chatDTO.toEntity();
-        chatRepository.save(chatEntity);
+    public ChatDTO createChat(ChatDTO chatDTO) {
+        ChatEntity chatEntity = chatRepository.save(chatDTO.toEntity());
+        return ChatDTO.of(chatEntity);
     }
 
     @Transactional

@@ -41,15 +41,21 @@ public class ChatServiceTest {
                 .username(username)
                 .message(message)
                 .build();
-        chatService.createChat(chatDTO);
+        ChatDTO savedChatDTO = chatService.createChat(chatDTO);
 
         // then
         List<ChatDTO> chatDTOList = chatService.showChat(1L);
         assert chatDTOList.size() == 1;
-        ChatDTO savedChatDTO = chatDTOList.getFirst();
+        ChatDTO resultChatDTO = chatDTOList.getFirst();
+        assert resultChatDTO.getTeamId().equals(teamId);
+        assert resultChatDTO.getUsername().equals(username);
+        assert resultChatDTO.getMessage().equals(message);
+
         assert savedChatDTO.getTeamId().equals(teamId);
         assert savedChatDTO.getUsername().equals(username);
         assert savedChatDTO.getMessage().equals(message);
+        System.out.println(savedChatDTO.getTime());
+        System.out.println(resultChatDTO.getTime());
     }
 
     @Test

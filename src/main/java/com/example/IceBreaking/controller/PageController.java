@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -45,9 +46,9 @@ public class PageController {
         log.info("admin controller" + model);
         return "admin";
     }
-    @GetMapping("/room/{room_id}")
+    @GetMapping("/room")
     @Operation(summary = "room controller")
-    public String room(@PathVariable("room_id") Long room_id, Model model) {
+    public String room(@RequestParam Long room_id, Model model) {
         log.info("room controller" + model);
         log.info("room_id: " + room_id);
 
