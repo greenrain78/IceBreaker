@@ -48,18 +48,16 @@ public class PageController {
     }
     @GetMapping("/room")
     @Operation(summary = "room controller")
-    public String room(@RequestParam Long room_id, Model model) {
+    public String room(@RequestParam Long teamId, Model model) {
         log.info("room controller" + model);
-        log.info("room_id: " + room_id);
+        log.info("room_id: " + teamId);
 
-        TeamDTO teamDTO = teamService.getTeamById(room_id);
-
+        TeamDTO teamDTO = teamService.getTeamById(teamId);
         model.addAttribute("team", teamDTO);
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("name", username);
         return "/team/room";
-    }
-    @GetMapping("/team")
-    public String team(Model model) {
-        return "team";
     }
     @GetMapping("/team/create")
     public String createTeam(Model model) {
