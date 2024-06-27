@@ -33,4 +33,11 @@ public class TeamDTO {
                 .usernameList(teamEntity.getUsernameList())
                 .build();
     }
+    @Override
+    public String toString() {
+        return "TeamDTO{" +
+                "teamName='" + teamName + '\'' +
+                ", usernameList=" + usernameList +
+                '}';
+    }
 }

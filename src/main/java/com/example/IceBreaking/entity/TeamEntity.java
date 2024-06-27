@@ -15,7 +15,7 @@ public class TeamEntity {
     private int id;
 
     @Column(nullable = false)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> usernameList;
 
     @Column(nullable = false, unique = true)

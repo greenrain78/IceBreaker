@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 @SpringBootTest
 @ActiveProfiles("test") // 'test' 프로파일이 설정되어 있다고 가정
 public class TeamServiceTest {
@@ -59,5 +61,47 @@ public class TeamServiceTest {
         assert joinedTeamDTO.getUsernameList().getFirst().equals(username);
         assert joinedTeamDTO.getUsernameList().getLast().equals(newUsername);
 
+    }
+
+    @Test
+    @DisplayName("팀 목록 조회 테스트")
+    public void showTeamsByUsernameTest() {
+        // given
+        String teamName = "팀 이름";
+        String username = "사용자 이름";
+        TeamDTO teamDTO = teamService.createTeam(teamName, username);
+
+        // when
+        List<TeamDTO> teamDTOList = teamService.showTeamsByUsername(username);
+
+        // then
+        assert teamDTOList.size() == 1;
+        TeamDTO teamDTOFromList = teamDTOList.getFirst();
+        assert teamDTOFromList.getTeamName().equals(teamName);
+        assert teamDTOFromList.getUsernameList().size() == 1;
+        assert teamDTOFromList.getUsernameList().getFirst().equals(username);
+
+    }
+
+    @Test
+    @DisplayName("팀 탈퇴 테스트")
+    public void leaveTeamTest() {
+        // given
+        String teamName = "팀 이름";
+        String username = "사용자 이름";
+        TeamDTO teamDTO = teamService.createTeam(teamName, username);
+        String newUsername = "새로운 사용자 이름";
+        teamService.joinTeam(teamName, newUsername);
+
+        // when
+        teamService.leaveTeam(teamName, newUsername);
+        TeamDTO leftTeamDTO = teamService.showTeamsByUsername(username).getFirst();
+        List<TeamDTO> teamDTOList = teamService.showTeamsByUsername(newUsername);
+        // then
+        assert leftTeamDTO != null;
+        assert leftTeamDTO.getTeamName().equals(teamName);
+        assert leftTeamDTO.getUsernameList().size() == 1;
+        assert leftTeamDTO.getUsernameList().getFirst().equals(username);
+        assert teamDTOList.isEmpty();
     }
 }
