@@ -1,6 +1,7 @@
 package com.example.IceBreaking.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -11,30 +12,34 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamEntity {
+public class ChatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true)
-    private String teamName;
+    @Column(nullable = false)
+    private Long teamId;
 
     @Column(nullable = false)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> usernameList;
+    private String userName;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String message;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime time;
 
     @Builder
-    public TeamEntity(List<String> usernameList, String teamName) {
-        this.usernameList = usernameList;
-        this.teamName = teamName;
-    }
-    @PrePersist
-    protected void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public ChatEntity(Long teamId, String userName, String message) {
+        this.teamId = teamId;
+        this.userName = userName;
+        this.message = message;
     }
 
+    @PrePersist
+    public void prePersist() {
+        this.time = LocalDateTime.now();
+    }
 }

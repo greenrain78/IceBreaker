@@ -1,25 +1,18 @@
 package com.example.IceBreaking.dto;
 
 import com.example.IceBreaking.entity.TeamEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
+@Builder
 public class TeamDTO {
     private String teamName;
     private List<String> usernameList;
-
-    @Builder
-    public TeamDTO(String teamName, List<String> usernameList) {
-        this.teamName = teamName;
-        this.usernameList = usernameList;
-    }
+    private LocalDateTime createdAt;
 
     public TeamEntity toEntity() {
         return TeamEntity.builder()
@@ -31,13 +24,8 @@ public class TeamDTO {
         return TeamDTO.builder()
                 .teamName(teamEntity.getTeamName())
                 .usernameList(teamEntity.getUsernameList())
+                .createdAt(teamEntity.getCreatedAt())
                 .build();
     }
-    @Override
-    public String toString() {
-        return "TeamDTO{" +
-                "teamName='" + teamName + '\'' +
-                ", usernameList=" + usernameList +
-                '}';
-    }
+
 }

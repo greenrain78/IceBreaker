@@ -18,11 +18,11 @@ public class TeamService {
 
     @Transactional
     public TeamDTO createTeam(String teamName, String username) {
-        TeamEntity teamEntity = TeamEntity.builder()
+        TeamDTO teamDTO = TeamDTO.builder()
                 .teamName(teamName)
                 .usernameList(Collections.singletonList(username))
                 .build();
-        teamRepository.save(teamEntity);
+        TeamEntity teamEntity = teamRepository.save(teamDTO.toEntity());
         return TeamDTO.of(teamEntity);
     }
 
