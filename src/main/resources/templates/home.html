@@ -167,8 +167,10 @@
 </div>
 
 <div class="buttons-bottom">
-    <a th:if="${session.loginedUser}" href="/team/showCreateForm">팀플방 생성</a>
-    <a th:if="${session.loginedUser}" href="/team/showAll">팀플방 찾기</a>
+<!--  ROLE_ANONYMOUS이 아닌 경우 보이게  -->
+    <a
+    <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/create">팀플방 생성</a>
+    <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/showAll">팀플방 찾기</a>
 </div>
 
 </body>

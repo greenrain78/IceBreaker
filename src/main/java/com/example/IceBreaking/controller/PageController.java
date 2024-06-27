@@ -19,7 +19,7 @@ import java.util.Iterator;
 @Controller
 @RequiredArgsConstructor
 @Tag(name = "home", description = "home controller")
-public class HomeController {
+public class PageController {
     @GetMapping("/")
     @Operation(summary = "home controller")
     public String home(Model model) {
@@ -34,7 +34,6 @@ public class HomeController {
 
         model.addAttribute("role", role);
         model.addAttribute("name", authentication.getName());
-        model.addAttribute("name", authentication.getName());
         log.info("home controller" + model);
         return "home";
     }
@@ -43,5 +42,15 @@ public class HomeController {
     public String admin(Model model) {
         log.info("admin controller" + model);
         return "admin";
+    }
+
+    @GetMapping("/team")
+    public String team(Model model) {
+        return "team";
+    }
+    @GetMapping("/team/create")
+    public String createTeam(Model model) {
+        log.info("create team" + model);
+        return "team/create";
     }
 }

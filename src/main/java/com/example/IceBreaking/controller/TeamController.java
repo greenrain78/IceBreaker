@@ -1,28 +1,31 @@
 package com.example.IceBreaking.controller;
 
+import com.example.IceBreaking.dto.TeamCreateDTO;
 import com.example.IceBreaking.dto.TeamDTO;
 import com.example.IceBreaking.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@Controller
+@Slf4j
+@RestController
 @RequiredArgsConstructor
 public class TeamController {
 
     private final TeamService teamService;
-    @GetMapping("/team")
-    public String team(Model model) {
-        return "team";
-    }
+
     @PostMapping("/team/create")
-    public String createTeam(Model model) {
-        return "redirect:/team";
+    public ResponseEntity<Object> createTeam(@RequestBody TeamCreateDTO teamCreateDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        TeamDTO teamDTO = teamService.createTeam(teamCreateDTO.getTeamName(), username);
+        return ResponseEntity.ok(teamDTO);
     }
     @GetMapping("/team/join")
     public String joinTeam(Long teamId, Model model) {
