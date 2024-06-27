@@ -61,4 +61,11 @@ public class TeamService {
                 .toList();
     }
 
+    @Transactional
+    public TeamDTO getTeamById(Long id) {
+        TeamEntity teamEntity = teamRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀입니다."));
+        return TeamDTO.of(teamEntity);
+    }
+
 }

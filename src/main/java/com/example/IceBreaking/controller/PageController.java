@@ -1,6 +1,8 @@
 package com.example.IceBreaking.controller;
 
 
+import com.example.IceBreaking.dto.TeamDTO;
+import com.example.IceBreaking.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,11 +23,10 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 @Tag(name = "home", description = "home controller")
 public class PageController {
+    private final TeamService teamService;
     @GetMapping("/")
     @Operation(summary = "home controller")
     public String home(Model model) {
-
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -43,7 +45,17 @@ public class PageController {
         log.info("admin controller" + model);
         return "admin";
     }
+    @GetMapping("/room/{room_id}")
+    @Operation(summary = "room controller")
+    public String room(@PathVariable("room_id") Long room_id, Model model) {
+        log.info("room controller" + model);
+        log.info("room_id: " + room_id);
 
+        TeamDTO teamDTO = teamService.getTeamById(room_id);
+
+        model.addAttribute("team", teamDTO);
+        return "/team/room";
+    }
     @GetMapping("/team")
     public String team(Model model) {
         return "team";
