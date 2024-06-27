@@ -53,7 +53,7 @@ public class TeamService {
     }
 
     @Transactional
-    public List<TeamDTO> showTeamsByUsername(String username) {
+    public List<TeamDTO> getTeamsByUsername(String username) {
         List<TeamEntity> teamEntityList = teamRepository.findByUsernameListContains(username);
         // list 2 dto list
         return teamEntityList.stream()

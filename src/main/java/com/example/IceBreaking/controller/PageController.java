@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -40,12 +41,6 @@ public class PageController {
         log.info("home controller" + model);
         return "home";
     }
-    @GetMapping("/admin")
-    @Operation(summary = "admin controller")
-    public String admin(Model model) {
-        log.info("admin controller" + model);
-        return "admin";
-    }
     @GetMapping("/room")
     @Operation(summary = "room controller")
     public String room(@RequestParam Long teamId, Model model) {
@@ -63,5 +58,19 @@ public class PageController {
     public String createTeam(Model model) {
         log.info("create team" + model);
         return "team/create";
+    }
+    @GetMapping("/team/mine")
+    public String getMyTeam(Model model) {
+        log.info("get my team" + model);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username.equals("anonymousUser")) {
+            return "redirect:/error";
+        }
+        List<TeamDTO> teamDTOList = teamService.getTeamsByUsername(username);
+
+        model.addAttribute("username", username);
+        model.addAttribute("teamList", teamDTOList);
+
+        return "team/mine";
     }
 }

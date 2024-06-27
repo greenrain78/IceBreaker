@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class TeamDTO {
+    private Long id;
     private String teamName;
     private List<String> usernameList;
     private LocalDateTime createdAt;
@@ -22,6 +23,7 @@ public class TeamDTO {
     }
     public static TeamDTO of(TeamEntity teamEntity) {
         return TeamDTO.builder()
+                .id(teamEntity.getId())
                 .teamName(teamEntity.getTeamName())
                 .usernameList(teamEntity.getUsernameList())
                 .createdAt(teamEntity.getCreatedAt())

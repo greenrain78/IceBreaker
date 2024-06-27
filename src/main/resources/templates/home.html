@@ -170,7 +170,7 @@
 <!--  ROLE_ANONYMOUS이 아닌 경우 보이게  -->
     <a
     <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/create">팀플방 생성</a>
-    <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/showAll">팀플방 찾기</a>
+    <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/mine">참여중인 채팅방</a>
 </div>
 
 </body>

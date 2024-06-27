@@ -72,7 +72,7 @@ public class TeamServiceTest {
         TeamDTO teamDTO = teamService.createTeam(teamName, username);
 
         // when
-        List<TeamDTO> teamDTOList = teamService.showTeamsByUsername(username);
+        List<TeamDTO> teamDTOList = teamService.getTeamsByUsername(username);
 
         // then
         assert teamDTOList.size() == 1;
@@ -95,8 +95,8 @@ public class TeamServiceTest {
 
         // when
         teamService.leaveTeam(teamName, newUsername);
-        TeamDTO leftTeamDTO = teamService.showTeamsByUsername(username).getFirst();
-        List<TeamDTO> teamDTOList = teamService.showTeamsByUsername(newUsername);
+        TeamDTO leftTeamDTO = teamService.getTeamsByUsername(username).getFirst();
+        List<TeamDTO> teamDTOList = teamService.getTeamsByUsername(newUsername);
         // then
         assert leftTeamDTO != null;
         assert leftTeamDTO.getTeamName().equals(teamName);
