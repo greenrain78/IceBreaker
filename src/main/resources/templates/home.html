@@ -144,12 +144,11 @@
 <img src="/img/logo.png" alt="Logo" class="logo">
 
 <div class="top-buttons">
-    <!-- 세션에 로그인 정보가 있을 때 -->
-    <a th:if="${session.loginedUser}" href="/logout">로그아웃</a>
-    <a th:if="${session.loginedUser}" href="/user/showEdit">프로필 수정</a>
     <!-- 세션에 로그인 정보가 없을 때 -->
-    <a th:unless="${session.loginedUser}" href="/showLogin">로그인</a>
-    <a th:unless="${session.loginedUser}" href="/showSignup">회원가입</a>
+    <a th:if="${role == 'ROLE_ANONYMOUS'}" href="/login">로그인</a>
+    <a th:if="${role == 'ROLE_ANONYMOUS'}" href="/join">회원가입</a>
+    <!-- 세션에 로그인 정보가 있을 때 -->
+    <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/logout">로그아웃</a>
 </div>
 
 <h2>어색한 팀플 시작 얼음깨기와 함께!</h2>

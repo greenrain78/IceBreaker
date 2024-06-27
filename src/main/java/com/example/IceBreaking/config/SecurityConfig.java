@@ -42,6 +42,13 @@ public class SecurityConfig {
                         .loginProcessingUrl("/loginProc")   // login 페이지에서 로그인 버튼 클릭 시 loginProc으로 요청
                         .permitAll()
         );
+
+        // 로그아웃 설정
+        http.logout((logout) -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")  // 로그아웃 성공 시 /로 리다이렉트
+                .permitAll()
+        );
         // csrf 보안 설정 비활성화 - post 요청 시 csrf 토큰을 요구하는데, 이를 비활성화
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
