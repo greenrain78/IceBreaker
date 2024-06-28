@@ -45,7 +45,10 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	// web socket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
+	// web flux
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// jackson
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 tasks.named('test') {
