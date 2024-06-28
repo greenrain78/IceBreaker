@@ -45,9 +45,10 @@ public class GptClient {
             throw new RuntimeException("Parsing Error");
         }
     }
-    public String callGptSimple(List<GptChatDTO> chatList) {
-        String systemInstruction = "귀엽고 깜찍하게 답변해";
-        String systemContent = "{\"parts\":[{\"text\": \"" + systemInstruction + "\"}]}";
+    public String callGptSimple(String instruction, List<GptChatDTO> chatList) {
+        // 시스템 명령 구성
+        String systemContent = "{\"parts\":[{\"text\": \"" + instruction + "\"}]}";
+        // 채팅 내용 구성
         List<String> contentList = new ArrayList<>();
         for (GptChatDTO chat : chatList) {
             if (Objects.equals(chat.getUsername(), "model")) {
@@ -56,8 +57,8 @@ public class GptClient {
                 contentList.add("{\"role\":\"user\", \"parts\":[{\"text\": \"" + chat.getMessage() + "\"}]}");
             }
         }
+        // json 구성
         String json = "{\"system_instruction\": " + systemContent +", \"contents\": ["+ String.join(",", contentList) + "]}";
-        // webClient 요청 데이터를 json parsing -> String
         return getResponse(json);
 
 

@@ -1,35 +1,77 @@
 package com.example.IceBreaking.gpt;
 
 import com.example.IceBreaking.config.AppEnvConfig;
+import com.example.IceBreaking.dto.GptChatDTO;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.ArrayList;
+import java.util.List;
 
-@WebFluxTest(GptClient.class)
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
 public class GptClientTest {
 
-    @Mock
+    @Autowired
     private AppEnvConfig appEnv;
 
-    @Mock
-    private WebClient webClient;
-    @Disabled
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+//    @Disabled
     @Test
-    @DisplayName("testGetGptResponse_success")
-    public void testGetGptResponse_success() {
-        // given
+    @DisplayName("직접 호출 테스트")
+    public void testDirectCall() {
+        WebClient webClient = webClientBuilder.build();
+        GptClient gptClient = new GptClient(appEnv, webClient);
+        String request = "{\"system_instruction\": {\"parts\":[{\"text\": \"귀엽고 깜찍하게 답변해\"}]}, \"contents\": []}";
+        String response = gptClient.getResponse(request);
+        assertNotNull(response);
+        System.out.println("Response: " + response);
+
+    }
+
+//    @Disabled
+    @Test
+    @DisplayName("GPT API 호출 테스트")
+    public void testGetGptResponse() {
+        WebClient webClient = webClientBuilder.build();
         GptClient gptClient = new GptClient(appEnv, webClient);
 
-        // when
-//        String response = gptClient.callGptSimple("Hello", null);
+        List<GptChatDTO> chatList = new ArrayList<>();
+        GptChatDTO chatDTO = new GptChatDTO("user", "안녕하세요");
+        chatList.add(chatDTO);
+        String instruction = "귀엽고 깜찍하게 답변해";
+        String response = gptClient.callGptSimple(instruction, chatList);
+//        String modelText = "배고파서 저녁먹으려고";
 
-        // then
-//        assertEquals("Hello, world!", response);
+        assertNotNull(response);
+        System.out.println("Response: " + response);
+    }
+    @Test
+    @DisplayName("GPT API을 이전 요청과 함께 호출하는 테스트")
+    public void testGetGptResponseWithModel() {
+        WebClient webClient = webClientBuilder.build();
+        GptClient gptClient = new GptClient(appEnv, webClient);
+
+        List<GptChatDTO> chatList = new ArrayList<>();
+        GptChatDTO chatDTO = new GptChatDTO("user", "안녕하세요");
+        chatList.add(chatDTO);
+        String instruction = "귀엽고 깜찍하게 답변해";
+        // 첫번째 요청
+        String modelText = gptClient.callGptSimple(instruction, chatList);
+        System.out.println("Model Response: " + modelText);
+        // 이전 요청에 대한 응답을 다음 요청에 함께 전달
+        chatList.add(new GptChatDTO("model", modelText));
+        chatList.add(new GptChatDTO("user", "점심을 추천해줘"));
+        String response = gptClient.callGptSimple(instruction, chatList);
+
+        assertNotNull(response);
+        System.out.println("Model Response: " + response);
     }
 }
