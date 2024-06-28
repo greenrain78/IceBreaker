@@ -20,6 +20,9 @@ public class TeamEntity {
     private String teamName;
 
     @Column(nullable = false)
+    private String teamType;
+
+    @Column(nullable = false)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> usernameList;
 
@@ -28,9 +31,10 @@ public class TeamEntity {
     private LocalDateTime createdAt;
 
     @Builder
-    public TeamEntity(List<String> usernameList, String teamName) {
+    public TeamEntity(List<String> usernameList, String teamName, String teamType) {
         this.usernameList = usernameList;
         this.teamName = teamName;
+        this.teamType = teamType;
     }
     @PrePersist
     protected void prePersist() {

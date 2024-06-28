@@ -15,14 +15,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
+    private final TeamSupportService teamSupportService;
 
     @Transactional
-    public TeamDTO createTeam(String teamName, String username) {
+    public TeamDTO createTeam(String teamName, String teamType, String username) {
         TeamDTO teamDTO = TeamDTO.builder()
                 .teamName(teamName)
+                .teamType(teamType)
                 .usernameList(Collections.singletonList(username))
                 .build();
         TeamEntity teamEntity = teamRepository.save(teamDTO.toEntity());
+        if (teamType.equals("welcome")) {
+            teamSupportService.initWelcomeTeam(teamEntity.getId());
+        }
         return TeamDTO.of(teamEntity);
     }
 

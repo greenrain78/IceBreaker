@@ -25,7 +25,7 @@ public class TeamController {
     @PostMapping("/team/create")
     public ResponseEntity<Object> createTeam(@RequestBody TeamCreateDTO teamCreateDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        TeamDTO teamDTO = teamService.createTeam(teamCreateDTO.getTeamName(), username);
+        TeamDTO teamDTO = teamService.createTeam(teamCreateDTO.getTeamName(), "basic", username);
         return ResponseEntity.ok(teamDTO);
     }
     @GetMapping("/team/join")

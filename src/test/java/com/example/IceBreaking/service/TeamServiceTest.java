@@ -33,7 +33,7 @@ public class TeamServiceTest {
         String username = "사용자 이름";
 
         // when
-        TeamDTO teamDTO = teamService.createTeam(teamName, username);
+        TeamDTO teamDTO = teamService.createTeam(teamName, "basic", username);
 
         // then
         assert teamDTO != null;
@@ -48,7 +48,7 @@ public class TeamServiceTest {
         // given
         String teamName = "팀 이름";
         String username = "사용자 이름";
-        TeamDTO teamDTO = teamService.createTeam(teamName, username);
+        TeamDTO teamDTO = teamService.createTeam(teamName, "basic", username);
 
         // when
         String newUsername = "새로운 사용자 이름";
@@ -69,7 +69,7 @@ public class TeamServiceTest {
         // given
         String teamName = "팀 이름";
         String username = "사용자 이름";
-        TeamDTO teamDTO = teamService.createTeam(teamName, username);
+        TeamDTO teamDTO = teamService.createTeam(teamName, "basic", username);
 
         // when
         List<TeamDTO> teamDTOList = teamService.getTeamsByUsername(username);
@@ -89,7 +89,7 @@ public class TeamServiceTest {
         // given
         String teamName = "팀 이름";
         String username = "사용자 이름";
-        TeamDTO teamDTO = teamService.createTeam(teamName, username);
+        TeamDTO teamDTO = teamService.createTeam(teamName, "basic", username);
         String newUsername = "새로운 사용자 이름";
         teamService.joinTeam(teamName, newUsername);
 

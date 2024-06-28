@@ -1,6 +1,7 @@
 package com.example.IceBreaking.controller.page;
 
 
+import com.example.IceBreaking.domain.TeamTypeEnum;
 import com.example.IceBreaking.dto.TeamDTO;
 import com.example.IceBreaking.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -40,10 +42,26 @@ public class RoomPageController {
     }
     @GetMapping("/new")
     @Operation(summary = "new room controller")
-    public String newRoom(Model model) {
-        log.info("new room controller" + model);
+    public String newRoom(@RequestParam(defaultValue = "basic") String type, Model model) {
+        log.info("new room controller" + model + " type: " + type);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        TeamDTO teamDTO = teamService.createTeam("임시채팅", username);
+        if (username.equals("anonymousUser")) {
+            return "redirect:/error";
+        }
+        // teamType 이 열거형 TeamTypeEnum 에 있는지 확인
+        if (Arrays.stream(TeamTypeEnum.values()).noneMatch(teamTypeEnum -> teamTypeEnum.getVal().equals(type))) {
+            return "redirect:/error";
+        }
+        log.info("teamType: " + type);
+        String teamName;
+        if (type.equals("basic")) {
+            teamName = "임시채팅";
+        } else if (type.equals("welcome")) {
+            teamName = "환영합니다.";
+        } else {
+            throw new IllegalArgumentException("teamType is not valid");
+        }
+        TeamDTO teamDTO = teamService.createTeam(teamName, type, username);
         return "redirect:/room?teamId=" + teamDTO.getId();
     }
 }

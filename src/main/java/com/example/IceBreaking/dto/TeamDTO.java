@@ -12,12 +12,14 @@ import java.util.List;
 public class TeamDTO {
     private Long id;
     private String teamName;
+    private String teamType;
     private List<String> usernameList;
     private LocalDateTime createdAt;
 
     public TeamEntity toEntity() {
         return TeamEntity.builder()
                 .teamName(teamName)
+                .teamType(teamType)
                 .usernameList(usernameList)
                 .build();
     }

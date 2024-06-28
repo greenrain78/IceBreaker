@@ -241,7 +241,11 @@
         const formattedTime = `${year}-${month}-${day} ${hour}:${minute}:${secondCleaned}`;
         console.log(message.username);
         console.log(username);
-        newMessage.classList.add(message.username === username ? 'user' : 'others');
+        if (message.username === 'model' || message.username === 'announcement') {
+            newMessage.classList.add('announcement');
+        }else {
+            newMessage.classList.add(message.username === username ? 'user' : 'others');
+        }
         newMessage.innerHTML = `<p class="message-text"><b>${message.username}:</b> ${message.message}</p><span class="message-info">${formattedTime}</span>`;
         chatMessages.appendChild(newMessage);
         chatMessages.scrollTop = chatMessages.scrollHeight;

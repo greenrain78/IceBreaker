@@ -14,4 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class TeamCreateDTO {
     private String teamName;
+    private String teamType;
 }
