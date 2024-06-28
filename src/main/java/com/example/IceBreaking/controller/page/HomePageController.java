@@ -1,4 +1,4 @@
-package com.example.IceBreaking.controller;
+package com.example.IceBreaking.controller.page;
 
 
 import com.example.IceBreaking.dto.TeamDTO;
@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
@@ -24,7 +23,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Tag(name = "home", description = "home controller")
-public class PageController {
+public class HomePageController {
     private final TeamService teamService;
     @GetMapping("/")
     @Operation(summary = "home controller")
@@ -40,19 +39,6 @@ public class PageController {
         model.addAttribute("name", authentication.getName());
         log.info("home controller" + model);
         return "home";
-    }
-    @GetMapping("/room")
-    @Operation(summary = "room controller")
-    public String room(@RequestParam Long teamId, Model model) {
-        log.info("room controller" + model);
-        log.info("room_id: " + teamId);
-
-        TeamDTO teamDTO = teamService.getTeamById(teamId);
-        model.addAttribute("team", teamDTO);
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("name", username);
-        return "/team/room";
     }
     @GetMapping("/team/create")
     public String createTeam(Model model) {

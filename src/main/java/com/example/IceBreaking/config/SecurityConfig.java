@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**").permitAll() // h2-console 접근 허용
                 .requestMatchers("/", "login", "/sign-up",  "/loginProc", "/join", "/joinProc").permitAll() // 로그인, 회원가입 페이지 접근 허용
                 .requestMatchers("/admin").hasRole("ADMIN") // ADMIN 권한을 가진 유저에 대해 접근 허용
-                .requestMatchers("/my/**").hasAnyRole("ADMIN", "USER") // ADMIN, USER 권한을 가진 유저에 대해 접근 허용
+                .requestMatchers("/new").hasAnyRole("ADMIN", "USER") // ADMIN, USER 권한을 가진 유저에 대해 접근 허용
                 .anyRequest().authenticated()   // 모든 요청에 대해 인증을 요구
         );
 
