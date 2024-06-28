@@ -42,4 +42,15 @@ public class ChatEntity {
     public void prePersist() {
         this.time = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "ChatEntity{" +
+                "id=" + id +
+                ", teamId=" + teamId +
+                ", userName='" + userName + '\'' +
+                ", message='" + message + '\'' +
+                ", time=" + time +
+                '}';
+    }
 }

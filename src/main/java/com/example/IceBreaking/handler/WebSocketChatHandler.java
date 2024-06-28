@@ -4,6 +4,7 @@ import com.example.IceBreaking.dto.ChatDTO;
 import com.example.IceBreaking.dto.ChatSocketDTO;
 import com.example.IceBreaking.entity.ChatEntity;
 import com.example.IceBreaking.repository.ChatRepository;
+import com.example.IceBreaking.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -18,7 +19,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class WebSocketChatHandler extends TextWebSocketHandler {
 
     private final SimpMessagingTemplate template;
-    private final ChatRepository chatRepository;
+    private final ChatService chatService;
 
     @MessageMapping("/chat/message")
     public void message(ChatSocketDTO chatSocketDTO, SimpMessageHeaderAccessor headerAccessor) {
@@ -30,9 +31,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
                 .message(chatSocketDTO.getMessage())
                 .build();
         // chat 저장
-
-        ChatEntity chatEntity = chatRepository.save(chatDTO.toEntity());
-        ChatDTO savedChatDTO = ChatDTO.of(chatEntity);
+        ChatDTO savedChatDTO = chatService.createChat(chatDTO);
         template.convertAndSend("/sub/chat/room/" + chatSocketDTO.getTeamId(), savedChatDTO);
     }
 

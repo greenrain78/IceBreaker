@@ -19,4 +19,14 @@ public class UserEntity {
     private String password;
     @Column(nullable = false)
     private String role;
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

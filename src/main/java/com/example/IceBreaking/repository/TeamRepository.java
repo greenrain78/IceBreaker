@@ -10,4 +10,5 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Long> {
     List<TeamEntity> findByUsernameListContains(String username);
 
     TeamEntity findByTeamName(String teamName);
+
 }

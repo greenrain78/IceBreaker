@@ -41,4 +41,14 @@ public class TeamEntity {
         this.createdAt = LocalDateTime.now();
     }
 
+    @Override
+    public String toString() {
+        return "TeamEntity{" +
+                "id=" + id +
+                ", teamName='" + teamName + '\'' +
+                ", teamType='" + teamType + '\'' +
+                ", usernameList=" + usernameList +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
