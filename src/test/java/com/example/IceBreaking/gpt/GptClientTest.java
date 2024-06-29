@@ -2,7 +2,6 @@ package com.example.IceBreaking.gpt;
 
 import com.example.IceBreaking.config.AppEnvConfig;
 import com.example.IceBreaking.dto.GptChatDTO;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class GptClientTest {
     @DisplayName("직접 호출 테스트")
     public void testDirectCall() {
         WebClient webClient = webClientBuilder.build();
-        GptClient gptClient = new GptClient(appEnv, webClient);
+        GeminiClient gptClient = new GeminiClient(appEnv, webClient);
         String request = "{\"system_instruction\": {\"parts\":[{\"text\": \"귀엽고 깜찍하게 답변해\"}]}, \"contents\": []}";
         String response = gptClient.getResponse(request);
         assertNotNull(response);
@@ -41,7 +40,7 @@ public class GptClientTest {
     @DisplayName("GPT API 호출 테스트")
     public void testGetGptResponse() {
         WebClient webClient = webClientBuilder.build();
-        GptClient gptClient = new GptClient(appEnv, webClient);
+        GeminiClient gptClient = new GeminiClient(appEnv, webClient);
 
         List<GptChatDTO> chatList = new ArrayList<>();
         GptChatDTO chatDTO = new GptChatDTO("user", "안녕하세요");
@@ -57,7 +56,7 @@ public class GptClientTest {
     @DisplayName("GPT API을 이전 요청과 함께 호출하는 테스트")
     public void testGetGptResponseWithModel() {
         WebClient webClient = webClientBuilder.build();
-        GptClient gptClient = new GptClient(appEnv, webClient);
+        GeminiClient gptClient = new GeminiClient(appEnv, webClient);
 
         List<GptChatDTO> chatList = new ArrayList<>();
         GptChatDTO chatDTO = new GptChatDTO("user", "안녕하세요");
