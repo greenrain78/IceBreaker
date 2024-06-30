@@ -228,7 +228,8 @@
     const username = document.getElementById('username').value;
 
     // 메세지 출력
-    const displayMessage = (message) => {
+    const displayMessage = (data) => {
+        const message = data['chat'];
         console.log(message);
         const chatMessages = document.getElementById('chatMessages');
         const chatAnnouncements = document.getElementById('chatAnnouncements');
@@ -258,9 +259,10 @@
 
     const onConnected = async () => {
         console.log("STOMP connection");
-        stompClient.subscribe("/sub/chat/room/" + teamId, function (chat) {
-            console.log(chat.body);
-            displayMessage(JSON.parse(chat.body));
+        stompClient.subscribe("/sub/chat/room/" + teamId, function (payload) {
+            console.log(payload.body);
+            const data = JSON.parse(payload.body);
+            displayMessage(data);
         });
     }
 

@@ -227,8 +227,13 @@
     const teamId = getUrlParameter('teamId');
     const username = document.getElementById('username').value;
 
-
-
+    const displayAnnouncement = (settings) => {
+        console.log(`settings: ${JSON.stringify(settings)}`);
+        // 잔여 회수 표시
+        const chatAnnouncements = document.getElementById('chatAnnouncements').getElementsByTagName('div')[0];
+        chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사을 알려주세요.`;
+        chatAnnouncements.getElementsByTagName('span')[0].innerHTML = `남은 횟수: ${settings['gptLimit']}`;
+    }
 
     // 메세지 출력
     const displayMessage = (message) => {
@@ -255,11 +260,6 @@
         newMessage.innerHTML = `<p class="message-text"><b>${message.username}:</b> ${formattedMessage}</p><span class="message-info">${formattedTime}</span>`;
         chatMessages.appendChild(newMessage);
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        // 잔여 회수 표시
-        const chatAnnouncements = document.getElementById('chatAnnouncements').getElementsByTagName('div')[0];
-
-        chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사을 알려주세요.`;
-        chatAnnouncements.getElementsByTagName('span')[0].innerHTML = `남은 횟수: ${message.messagesLeft}`;
     }
 
     // STOMP 연결
@@ -268,9 +268,11 @@
 
     const onConnected = async () => {
         console.log("STOMP connection");
-        stompClient.subscribe("/sub/chat/room/" + teamId, function (chat) {
-            console.log(chat.body);
-            displayMessage(JSON.parse(chat.body));
+        stompClient.subscribe("/sub/chat/room/" + teamId, function (payload) {
+            console.log(payload.body);
+            const data = JSON.parse(payload.body);
+            displayMessage(data['chat']);
+            displayAnnouncement(data['settings']);
         });
     }
 
@@ -299,8 +301,9 @@
             const url = `/chat/show/${teamId}`;
             const response = await axios.get(url);
             console.log(response.data);
-
-            response.data.forEach(displayMessage);
+            const chatList = response.data['chatList'];
+            chatList.forEach(displayMessage);
+            displayAnnouncement(response.data['settings']);
         }
         await loadChatMessages();
 

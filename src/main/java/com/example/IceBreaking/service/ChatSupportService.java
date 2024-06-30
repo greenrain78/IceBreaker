@@ -59,8 +59,13 @@ public class ChatSupportService {
     private void welcomeGptChat(TeamEntity teamEntity, List<GptChatDTO> chatList) {
         String gptLimit = teamEntity.getSettings().get("gptLimit");
         String response = gptService.getInterest(chatList, gptLimit);
-        sendGptChat(teamEntity.getId(), response);
-//        gptLimit 가 0이면 대화 종료
+
+        // GPT-3 API 호출 결과를 채팅으로 전송
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("settings", teamEntity.getSettings());
+        sendGptChat(teamEntity.getId(), response, payload);
+
+        // GPT-3 API 호출 횟수 감소
         if (gptLimit.equals("0")) {
             teamRepository.save(teamEntity);
         } else {
@@ -68,13 +73,14 @@ public class ChatSupportService {
             teamRepository.save(teamEntity);
         }
     }
-    private void sendGptChat(Long teamId, String response) {
+    private void sendGptChat(Long teamId, String response, Map<String, Object> payload) {
         ChatEntity chatEntity = ChatEntity.builder()
                 .teamId(teamId)
                 .userName("model")
                 .message(response)
                 .build();
         chatRepository.save(chatEntity);
-        template.convertAndSend("/sub/chat/room/" + teamId, ChatDTO.of(chatEntity));
+        payload.put("chat", ChatDTO.of(chatEntity));
+        template.convertAndSend("/sub/chat/room/" + teamId, payload);
     }
 }

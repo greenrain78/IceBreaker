@@ -33,27 +33,38 @@ public class SonnetClient implements GptClient{
 
     @Override
     public String callGptSimple(String instruction, List<GptChatDTO> chatList) {
-        List<String> contentList = new ArrayList<>();
+        StringBuilder chatContent = new StringBuilder();
         int inputTokens = 0;
+        String lastUsername = "user"; // 첫 대화는 항상 user 로 해야 한다고 api 문서에 명시되어 있음
+        StringBuilder content = new StringBuilder();
+
         // chatList의 첫번째 요소가 model이면 start 메세지 추가
         if (chatList.getFirst().getUsername().equals("model")) {
-            contentList.add("{\"role\":\"user\", \"content\": \"Start\"}");
+            content.append("Start");
         }
-
         for (GptChatDTO chat : chatList) {
             inputTokens += chat.getMessage().length();
             String message = chat.getMessage().replace('\n', ' ');
+            String username;
             if (chat.getUsername().equals("model")) {
-                contentList.add("{\"role\":\"assistant\", \"content\": \"" + message + "\"}");
+                username = "assistant";
             } else {
-                contentList.add("{\"role\":\"user\", \"content\": \"" + message + "\"}");
+                username = "user";
             }
+            // 이전 내용과 username이 동일하면 이전 내용에 이어서 추가
+            if (lastUsername.equals(username)) {
+                content.append(message);
+                continue;
+            }
+            // 이전 내용과 username이 다르면 이전 내용을 contentList에 추가
+            chatContent.append("{\"role\":\"").append(lastUsername).append("\", \"content\": \"").append(content).append("\"}, ");
+            lastUsername = username;
+            content = new StringBuilder();
+            content.append(message);
         }
+        chatContent.append("{\"role\":\"").append(lastUsername).append("\", \"content\": \"").append(content).append("\"}");
 
-
-
-
-        String content = String.join(",", contentList);
+        // requestBody 생성
         String MAX_TOKENS = String.valueOf(inputTokens * 2 + OUTPUT_TOKENS);
         String requestBody = """
                 {
@@ -61,7 +72,7 @@ public class SonnetClient implements GptClient{
                   "messages": [%s],
                   "system": "%s",
                   "max_tokens": %s
-                }""".formatted(content, instruction, MAX_TOKENS);
+                }""".formatted(chatContent, instruction, MAX_TOKENS);
         log.info("Request body: {}", requestBody);
 
         return getResponse(requestBody);

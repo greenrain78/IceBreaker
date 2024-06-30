@@ -13,12 +13,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
 
     private final ChatService chatService;
+    private final TeamService teamService;
 
     @PostMapping("/chat/create/{teamId}")
     public ResponseEntity<Object> createChat(@PathVariable Long teamId, @RequestBody ChatCreateDTO chatCreateDTO) {
@@ -34,7 +38,10 @@ public class ChatController {
 
     @GetMapping("/chat/show/{teamId}")
     public ResponseEntity<Object> showChat(@PathVariable Long teamId) {
-        return ResponseEntity.ok(chatService.showChat(teamId));
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("chatList", chatService.showChat(teamId));
+        payload.put("settings", teamService.getTeamById(teamId).getSettings());
+        return ResponseEntity.ok(payload);
     }
     @GetMapping("/chat/show/{teamId}/{page}")
     public ResponseEntity<Object> showChat(@PathVariable Long teamId, @PathVariable int page) {

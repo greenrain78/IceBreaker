@@ -55,14 +55,14 @@ public class SonnetClientTest {
     void callGptSimpleTest2() {
         // given
         // when
-        Long teamId = 11L;
+        Long teamId = 1L;
         List<GptChatDTO> chatList = new ArrayList<>();
         chatRepository.findTop30ByTeamIdOrderByTimeAsc(teamId).forEach(chatEntity -> {
             chatList.add(new GptChatDTO(chatEntity.getUserName(), chatEntity.getMessage()));
         });
+//        System.out.println(chatList);
         String instruction = "You are a helpful assistant. Your task is to engage in a conversation to learn more about the user's interests. Ask open-ended questions to understand their hobbies, preferences, and passions. Provide a friendly and welcoming environment for the user to share their interests. Respond in Korean.";
         String response = sonnetClient.callGptSimple(instruction, chatList);
-
         System.out.println(response);
     }
 }
