@@ -149,6 +149,7 @@
     <a th:if="${role == 'ROLE_ANONYMOUS'}" href="/join">회원가입</a>
     <!-- 세션에 로그인 정보가 있을 때 -->
     <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/logout">로그아웃</a>
+    <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/new?type=welcome">관심사 재설정</a>
 </div>
 
 <h2>어색한 팀플 시작 얼음깨기와 함께!</h2>

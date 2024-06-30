@@ -16,7 +16,14 @@ public class GptService {
 
     // 관심사 조사
     public String getInterest(List<GptChatDTO> chatList, String gptLimit) {
-        String limitMsg = "You have %s exchanges left. Once the count reaches 0, thank the user for the conversation and conclude the chat.";
+        // gptLimit 가 2 이상 인경우
+        String tempGptLimit;
+        if (Integer.parseInt(gptLimit) > 1) {
+            tempGptLimit = "You have 100 exchanges left."; // 이렇게 안하면 대화횟수 3일때 마무리를 하려고 함
+        } else {
+            tempGptLimit = "You have %s exchanges left.".formatted(gptLimit);
+        }
+        String limitMsg = "%s Once the count reaches 0, regardless of the user's response, thank the user for the conversation and conclude the chat.".formatted(tempGptLimit);
         String basicInstruction = "You are a helpful assistant. Your task is to engage in a conversation to learn more about the user's interests. Ask open-ended questions to understand their hobbies, preferences, and passions. Provide a friendly and welcoming environment for the user to share their interests. Respond in Korean.";
 
         String instruction = basicInstruction + " " + String.format(limitMsg, gptLimit);
