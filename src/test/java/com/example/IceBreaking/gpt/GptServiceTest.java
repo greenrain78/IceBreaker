@@ -1,14 +1,12 @@
 package com.example.IceBreaking.gpt;
 
-import com.example.IceBreaking.config.AppEnvConfig;
-import com.example.IceBreaking.dto.ChatDTO;
 import com.example.IceBreaking.dto.GptChatDTO;
-import org.junit.jupiter.api.Disabled;
+import com.example.IceBreaking.entity.ChatEntity;
+import com.example.IceBreaking.repository.ChatRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class GptServiceTest {
-
     @Autowired
     private GptService gptService;
+    @Autowired
+    private ChatRepository chatRepository;
 
 
 //    @Disabled
@@ -32,5 +31,19 @@ public class GptServiceTest {
         String response = gptService.getInterest(chatList, "5");
         assertNotNull(response);
         System.out.println("Response: " + response);
+    }
+
+    @Test
+    @DisplayName("대화 내용 분석 테스트")
+    public void testAnalyzeChat() {
+        List<ChatEntity> chatList = chatRepository.findTop30ByTeamIdOrderByTimeAsc(8L);
+        List<GptChatDTO> gptChatList = new ArrayList<>();
+        for (ChatEntity chat : chatList) {
+            gptChatList.add(new GptChatDTO(chat.getUserName(), chat.getMessage()));
+        }
+        String response = gptService.analyzeChat(gptChatList);
+        System.out.println("Response: " + response);
+
+
     }
 }

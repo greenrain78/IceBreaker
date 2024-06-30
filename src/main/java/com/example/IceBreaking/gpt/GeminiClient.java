@@ -26,11 +26,35 @@ public class GeminiClient implements GptClient {
         //        log.info("API URL: {}", API_URL + "key=" + appEnv.getApiKey());
         return API_URL + "key=" + appEnv.getApiKey();
     }
-    public String getResponse(String json) {
-        log.info("Request: {}", json);
+
+    public String callGptSimple(String instruction, List<GptChatDTO> chatList) {
+        // 시스템 명령 구성
+        // 채팅 내용 구성
+        List<String> contentList = new ArrayList<>();
+        for (GptChatDTO chat : chatList) {
+            if (Objects.equals(chat.getUsername(), "model")) {
+                contentList.add("{\"role\":\"model\", \"parts\":[{\"text\": \"" + chat.getMessage() + "\"}]}");
+            } else {
+                contentList.add("{\"role\":\"user\", \"parts\":[{\"text\": \"" + chat.getMessage() + "\"}]}");
+            }
+        }
+        return getResponse(instruction, String.join(",", contentList));
+
+
+    }
+
+    @Override
+    public String getResponse(String instruction, String content) {
+        // json 구성
+        String requestBody = """
+                {
+                  "system_instruction": {"parts":{"text": "%s"}},
+                  "contents": [%s]
+                }""".formatted(instruction, content);
+        log.info("Request: {}", requestBody);
         String response = webClient.post()
                 .uri(getApiUrl())
-                .bodyValue(json)
+                .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
@@ -44,27 +68,5 @@ public class GeminiClient implements GptClient {
             log.error("Response: {}", response);
             throw new RuntimeException("Parsing Error");
         }
-    }
-    public String callGptSimple(String instruction, List<GptChatDTO> chatList) {
-        // 시스템 명령 구성
-        String systemContent = "{\"parts\":[{\"text\": \"" + instruction + "\"}]}";
-        // 채팅 내용 구성
-        List<String> contentList = new ArrayList<>();
-        for (GptChatDTO chat : chatList) {
-            if (Objects.equals(chat.getUsername(), "model")) {
-                contentList.add("{\"role\":\"model\", \"parts\":[{\"text\": \"" + chat.getMessage() + "\"}]}");
-            } else {
-                contentList.add("{\"role\":\"user\", \"parts\":[{\"text\": \"" + chat.getMessage() + "\"}]}");
-            }
-        }
-        // json 구성
-        String json = """
-                {
-                  "system_instruction": %s,
-                  "contents": [%s]
-                }""".formatted(systemContent, String.join(",", contentList));
-        return getResponse(json);
-
-
     }
 }

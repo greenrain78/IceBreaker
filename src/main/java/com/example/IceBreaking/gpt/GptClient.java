@@ -8,6 +8,5 @@ public interface GptClient {
 
     String callGptSimple(String instruction, List<GptChatDTO> chatList);
 
-    String getResponse(String json);
-
+    String getResponse(String instruction, String content);
 }

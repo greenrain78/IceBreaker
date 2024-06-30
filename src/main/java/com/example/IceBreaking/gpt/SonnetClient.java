@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -34,7 +33,6 @@ public class SonnetClient implements GptClient{
     @Override
     public String callGptSimple(String instruction, List<GptChatDTO> chatList) {
         StringBuilder chatContent = new StringBuilder();
-        int inputTokens = 0;
         String lastUsername = "user"; // 첫 대화는 항상 user 로 해야 한다고 api 문서에 명시되어 있음
         StringBuilder content = new StringBuilder();
 
@@ -43,8 +41,7 @@ public class SonnetClient implements GptClient{
             content.append("Start");
         }
         for (GptChatDTO chat : chatList) {
-            inputTokens += chat.getMessage().length();
-            String message = chat.getMessage().replace('\n', ' ');
+            String message = chat.getMessage();
             String username;
             if (chat.getUsername().equals("model")) {
                 username = "assistant";
@@ -63,6 +60,12 @@ public class SonnetClient implements GptClient{
             content.append(message);
         }
         chatContent.append("{\"role\":\"").append(lastUsername).append("\", \"content\": \"").append(content).append("\"}");
+        return getResponse(instruction, chatContent.toString());
+    }
+
+    @Override
+    public String getResponse(String instruction, String content) {
+        int inputTokens = content.length();
 
         // requestBody 생성
         String MAX_TOKENS = String.valueOf(inputTokens * 2 + OUTPUT_TOKENS);
@@ -72,19 +75,15 @@ public class SonnetClient implements GptClient{
                   "messages": [%s],
                   "system": "%s",
                   "max_tokens": %s
-                }""".formatted(chatContent, instruction, MAX_TOKENS);
+                }""".formatted(content.replace('\n', ' '), instruction, MAX_TOKENS);
         log.info("Request body: {}", requestBody);
 
-        return getResponse(requestBody);
-    }
-
-    @Override
-    public String getResponse(String json) {
+        // api 호출
         Mono<String> responseMono = webClient.post()
                 .uri(getApiUrl())
                 .header("Authorization", "Bearer " + appEnv.getSonnetApiKey())
                 .header("Content-Type", "application/json")
-                .body(BodyInserters.fromValue(json))
+                .body(BodyInserters.fromValue(requestBody))
                 .retrieve()
                 .bodyToMono(String.class);
         String response = responseMono.block();

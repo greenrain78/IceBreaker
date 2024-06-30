@@ -1,6 +1,7 @@
 package com.example.IceBreaking.gpt;
 
 import com.example.IceBreaking.dto.GptChatDTO;
+import com.example.IceBreaking.entity.ChatEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,14 @@ public class GptService {
 
         String instruction = basicInstruction + " " + String.format(limitMsg, gptLimit);
         return gptClient.callGptSimple(instruction, chatList);
+    }
+    public String analyzeChat(List<GptChatDTO> chatList) {
+        StringBuilder chatResult = new StringBuilder();
+        for (GptChatDTO chat : chatList) {
+            chatResult.append(chat.getUsername()).append(": ").append(chat.getMessage()).append("    ");
+        }
+        String instruction = "Analyze the conversation habits and interests of user 123 based on the given conversation logs. Provide insights into their communication style, preferences, and any notable patterns. Respond in Korean.";
+        String content = "{\"role\":\"user\", \"content\": \"" + chatResult + "\"}";
+        return gptClient.getResponse(instruction, content);
     }
 }

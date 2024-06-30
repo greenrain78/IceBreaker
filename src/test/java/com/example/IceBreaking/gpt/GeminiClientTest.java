@@ -28,8 +28,7 @@ public class GeminiClientTest {
     public void testDirectCall() {
         WebClient webClient = webClientBuilder.build();
         GeminiClient gptClient = new GeminiClient(appEnv, webClient);
-        String request = "{\"system_instruction\": {\"parts\":[{\"text\": \"귀엽고 깜찍하게 답변해\"}]}, \"contents\": []}";
-        String response = gptClient.getResponse(request);
+        String response = gptClient.getResponse("귀엽고 깜찍하게 답변해", "");
         assertNotNull(response);
         System.out.println("Response: " + response);
 

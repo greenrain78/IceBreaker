@@ -212,6 +212,7 @@
         <div class="input-row">
             <input type="text" id="msg" class="message-input" placeholder="메시지를 입력하세요...">
             <button type="button" class="message-send" id="btnSend">전송</button>
+            <button type="button" class="message-send" id="btnSendAnalysis" style="display: none">대화 분석</button>
         </div>
     </div>
 
@@ -233,6 +234,11 @@
         const chatAnnouncements = document.getElementById('chatAnnouncements').getElementsByTagName('div')[0];
         chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사을 알려주세요.`;
         chatAnnouncements.getElementsByTagName('span')[0].innerHTML = `남은 횟수: ${settings['gptLimit']}`;
+        // 대화 분석 버튼 표시
+        const btnSendAnalysis = document.getElementById('btnSendAnalysis');
+        if (settings['gptLimit'] === '0') {
+            btnSendAnalysis.style.display = 'inline-block';
+        }
     }
 
     // 메세지 출력
