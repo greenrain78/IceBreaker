@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class GptClientTest {
+public class GeminiClientTest {
 
     @Autowired
     private AppEnvConfig appEnv;

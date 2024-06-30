@@ -10,5 +10,5 @@ public interface ChatRepository extends JpaRepository<ChatEntity, Long> {
     List<ChatEntity> findByTeamId(Long teamId);
 
     // findByTeamId limit 30
-    List<ChatEntity> findTop30ByTeamIdOrderByTimeDesc(Long teamId);
+    List<ChatEntity> findTop30ByTeamIdOrderByTimeAsc(Long teamId);
 }

@@ -58,7 +58,11 @@ public class GeminiClient implements GptClient {
             }
         }
         // json 구성
-        String json = "{\"system_instruction\": " + systemContent +", \"contents\": ["+ String.join(",", contentList) + "]}";
+        String json = """
+                {
+                  "system_instruction": %s,
+                  "contents": [%s]
+                }""".formatted(systemContent, String.join(",", contentList));
         return getResponse(json);
 
 

@@ -24,7 +24,7 @@ public class ChatEntity {
     private String userName;
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
 
     @CreatedDate

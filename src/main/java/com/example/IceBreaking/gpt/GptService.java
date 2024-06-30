@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GptService {
 
-    private final GeminiClient gptClient;
+    private final SonnetClient gptClient;
 
     // 관심사 조사
     public String getInterest(List<GptChatDTO> chatList) {

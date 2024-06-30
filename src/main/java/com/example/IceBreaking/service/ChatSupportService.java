@@ -39,7 +39,7 @@ public class ChatSupportService {
         }
         // 이전 대화 내용 가져오기
         List<GptChatDTO> chatList = new ArrayList<>();
-        chatRepository.findTop30ByTeamIdOrderByTimeDesc(teamId).forEach(chatEntity -> {
+        chatRepository.findTop30ByTeamIdOrderByTimeAsc(teamId).forEach(chatEntity -> {
             chatList.add(new GptChatDTO(chatEntity.getUserName(), chatEntity.getMessage()));
         });
         log.info("chatList: {}", chatList);
