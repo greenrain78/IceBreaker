@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -19,10 +21,17 @@ public class TeamService {
 
     @Transactional
     public TeamDTO createTeam(String teamName, String teamType, String username) {
+        Map<String, String> settings = new HashMap<>();
+        if (teamType.equals("basic")) {
+            settings.put("gptLimit", "-1");
+        } else if (teamType.equals("welcome")) {
+            settings.put("gptLimit", "5");
+        }
         TeamDTO teamDTO = TeamDTO.builder()
                 .teamName(teamName)
                 .teamType(teamType)
                 .usernameList(Collections.singletonList(username))
+                .settings(settings)
                 .build();
         TeamEntity teamEntity = teamRepository.save(teamDTO.toEntity());
         if (teamType.equals("welcome")) {

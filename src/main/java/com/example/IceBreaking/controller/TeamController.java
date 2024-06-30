@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -25,7 +27,7 @@ public class TeamController {
     @PostMapping("/team/create")
     public ResponseEntity<Object> createTeam(@RequestBody TeamCreateDTO teamCreateDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        TeamDTO teamDTO = teamService.createTeam(teamCreateDTO.getTeamName(), "basic", username);
+        TeamDTO teamDTO = teamService.createTeam(teamCreateDTO.getTeamName(), teamCreateDTO.getTeamType(), username);
         return ResponseEntity.ok(teamDTO);
     }
     @GetMapping("/team/join")

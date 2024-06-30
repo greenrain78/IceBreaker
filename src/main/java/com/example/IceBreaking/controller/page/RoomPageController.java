@@ -33,11 +33,15 @@ public class RoomPageController {
         log.info("room controller" + model);
         log.info("room_id: " + teamId);
 
-        TeamDTO teamDTO = teamService.getTeamById(teamId);
-        model.addAttribute("team", teamDTO);
-
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("name", username);
+
+        TeamDTO teamDTO = teamService.getTeamById(teamId);
+        model.addAttribute("team", teamDTO);
+        log.info("team: " + teamDTO);
+        if (teamDTO.getTeamType().equals("welcome")) {
+            return "/team/welcome";
+        }
         return "/team/room";
     }
     @GetMapping("/new")

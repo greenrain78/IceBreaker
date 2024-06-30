@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -14,6 +15,7 @@ public class TeamDTO {
     private String teamName;
     private String teamType;
     private List<String> usernameList;
+    private Map<String, String> settings;
     private LocalDateTime createdAt;
 
     public TeamEntity toEntity() {
@@ -21,13 +23,16 @@ public class TeamDTO {
                 .teamName(teamName)
                 .teamType(teamType)
                 .usernameList(usernameList)
+                .settings(settings)
                 .build();
     }
     public static TeamDTO of(TeamEntity teamEntity) {
         return TeamDTO.builder()
                 .id(teamEntity.getId())
                 .teamName(teamEntity.getTeamName())
+                .teamType(teamEntity.getTeamType())
                 .usernameList(teamEntity.getUsernameList())
+                .settings(teamEntity.getSettings())
                 .createdAt(teamEntity.getCreatedAt())
                 .build();
     }

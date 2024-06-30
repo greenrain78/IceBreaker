@@ -1,11 +1,13 @@
 package com.example.IceBreaking.entity;
 
+import com.example.IceBreaking.utils.HashMapConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Setter
@@ -26,15 +28,21 @@ public class TeamEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> usernameList;
 
+    @Lob
+    @Convert(converter = HashMapConverter.class)
+    @Column(columnDefinition = "TEXT")
+    private Map<String, String> settings;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public TeamEntity(List<String> usernameList, String teamName, String teamType) {
+    public TeamEntity(List<String> usernameList, String teamName, String teamType, Map<String, String> settings) {
         this.usernameList = usernameList;
         this.teamName = teamName;
         this.teamType = teamType;
+        this.settings = settings;
     }
     @PrePersist
     protected void prePersist() {
@@ -48,6 +56,7 @@ public class TeamEntity {
                 ", teamName='" + teamName + '\'' +
                 ", teamType='" + teamType + '\'' +
                 ", usernameList=" + usernameList +
+                ", settings=" + settings +
                 ", createdAt=" + createdAt +
                 '}';
     }

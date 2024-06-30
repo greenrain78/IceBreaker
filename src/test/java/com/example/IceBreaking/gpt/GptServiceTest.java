@@ -29,7 +29,7 @@ public class GptServiceTest {
         List<GptChatDTO> chatList = new ArrayList<>();
         chatList.add(new GptChatDTO("model", "안녕하세요! 오늘 하루 어떠셨나요? 요즘 관심 있는 취미나 활동이 있으신가요? 어떤 것들이 여러분의 열정을 불러일으키는지 궁금해요. 자유롭게 이야기해 주세요!"));
         chatList.add(new GptChatDTO("user", "요즘 관심 있는 취미는 없어요."));
-        String response = gptService.getInterest(chatList);
+        String response = gptService.getInterest(chatList, "5");
         assertNotNull(response);
         System.out.println("Response: " + response);
     }
