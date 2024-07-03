@@ -23,11 +23,14 @@ public class AppEnvConfig {
     @Value("${SONNET_API_KEY:None}")
     private String sonnetApiKey;
 
+    @Value("${ADMIN_EMAIL:None}")
+    private String adminEmail;
+
     public void refreshSonnetAPI() {
         try {
             // gcloud auth print-access-token 명령 실행
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("gcloud", "auth", "print-access-token");
+            processBuilder.command("gcloud", "auth", "print-access-token", adminEmail);
             Process process = processBuilder.start();
 
             // 명령 출력 읽기
