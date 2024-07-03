@@ -31,7 +31,7 @@ public class AppEnvConfig {
         try {
             // gcloud auth print-access-token 명령 실행
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("gcloud", "auth", "print-access-token", adminEmail);
+            processBuilder.command("gcloud", "auth", "list");
             Process process = processBuilder.start();
 
             // 명령 출력 읽기
