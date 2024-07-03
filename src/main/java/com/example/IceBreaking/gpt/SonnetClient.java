@@ -60,22 +60,17 @@ public class SonnetClient implements GptClient{
             content.append(message);
         }
         chatContent.append("{\"role\":\"").append(lastUsername).append("\", \"content\": \"").append(content).append("\"}");
-        return getResponse(instruction, chatContent.toString());
+        String requestBody = getRequestBody(instruction, chatContent.toString());
+        return getResponse(requestBody);
     }
 
     @Override
     public String getResponse(String instruction, String content) {
-        int inputTokens = content.length();
+        return null;
+    }
 
-        // requestBody 생성
-        String MAX_TOKENS = String.valueOf(inputTokens * 2 + OUTPUT_TOKENS);
-        String requestBody = """
-                {
-                  "anthropic_version": "vertex-2023-10-16",
-                  "messages": [%s],
-                  "system": "%s",
-                  "max_tokens": %s
-                }""".formatted(content.replace('\n', ' '), instruction, MAX_TOKENS);
+    @Override
+    public String getResponse(String requestBody) {
         log.info("Request body: {}", requestBody);
 
         // api 호출
@@ -96,5 +91,19 @@ public class SonnetClient implements GptClient{
             log.error("Response: {}", response);
             throw new RuntimeException("Parsing Error");
         }
+    }
+
+    private static String getRequestBody(String instruction, String content) {
+        int inputTokens = content.length();
+        String reformattedContent = content.replace('\n', ' ').replace("\"", " ");
+        // requestBody 생성
+        String MAX_TOKENS = String.valueOf(inputTokens * 2 + OUTPUT_TOKENS);
+        return """
+                {
+                  "anthropic_version": "vertex-2023-10-16",
+                  "messages": [%s],
+                  "system": "%s",
+                  "max_tokens": %s
+                }""".formatted(reformattedContent, instruction, MAX_TOKENS);
     }
 }
