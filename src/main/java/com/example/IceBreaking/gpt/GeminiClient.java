@@ -69,4 +69,9 @@ public class GeminiClient implements GptClient {
             throw new RuntimeException("Parsing Error");
         }
     }
+
+    @Override
+    public String getResponse(String requestBody) {
+        return null;
+    }
 }
