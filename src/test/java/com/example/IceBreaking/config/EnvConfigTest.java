@@ -1,31 +1,16 @@
 package com.example.IceBreaking.config;
 
-import jakarta.annotation.PostConstruct;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@Slf4j
-@Getter
-@Component
-public class AppEnvConfig {
-    @Value("${API_KEY:None}")
-    private String apiKey;
-
-    @Value("${DEEPL_API_KEY:None}")
-    private String deeplApiSecret;
-
-    @Value("${SONNET_API_KEY:None}")
-    private String sonnetApiKey;
-
-    public void refreshSonnetAPI() {
+public class EnvConfigTest {
+    @Test
+    public void test() {
         try {
-            // gcloud auth print-access-token 명령 실행
+                // gcloud auth print-access-token 명령 실행
             ProcessBuilder processBuilder = new ProcessBuilder();
             processBuilder.command("cmd.exe", "/c", "gcloud auth print-access-token");
             Process process = processBuilder.start();
@@ -42,20 +27,14 @@ public class AppEnvConfig {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 // 성공적으로 액세스 토큰을 가져온 경우
-                sonnetApiKey = output.toString();
-                log.info("Sonnet API Key: " + sonnetApiKey);
+                String accessToken = output.toString();
+                System.out.println("Access Token: " + accessToken);
             } else {
                 // 에러가 발생한 경우
-                log.error("Error: Failed to get access token");
-                sonnetApiKey = "None";
+                System.err.println("Error: Failed to get access token");
             }
         } catch (IOException | InterruptedException e) {
-            log.error("Failed to get access token", e);
-            sonnetApiKey = "None";
+            e.printStackTrace();
         }
-    }
-    @PostConstruct
-    public void init() {
-        refreshSonnetAPI();
     }
 }
