@@ -27,7 +27,7 @@ public class AppEnvConfig {
         try {
             // gcloud auth print-access-token 명령 실행
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("cmd.exe", "/c", "gcloud auth print-access-token");
+            processBuilder.command("gcloud auth print-access-token");
             Process process = processBuilder.start();
 
             // 명령 출력 읽기
@@ -46,12 +46,10 @@ public class AppEnvConfig {
                 log.info("Sonnet API Key: " + sonnetApiKey);
             } else {
                 // 에러가 발생한 경우
-                log.error("Error: Failed to get access token");
-                sonnetApiKey = "None";
+                log.error("Error: Failed to get access token - default: " + sonnetApiKey);
             }
         } catch (IOException | InterruptedException e) {
-            log.error("Failed to get access token", e);
-            sonnetApiKey = "None";
+            log.error("Failed to get access token - default: " + sonnetApiKey, e);
         }
     }
     @PostConstruct
