@@ -90,17 +90,18 @@
             event.preventDefault();
 
             const teamName = document.getElementById('teamName').value;
-
+            const teamType = "basic"
             fetch('/team/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ teamName })
+                body: JSON.stringify({ teamName, teamType })
             })
                 .then(response => response.json())
                 .then(data => {
                     alert('Team created successfully!');
+                    window.location.href = '/room?teamId=' + data.id;
                 })
                 .catch(error => {
                     console.error('Error:', error);
