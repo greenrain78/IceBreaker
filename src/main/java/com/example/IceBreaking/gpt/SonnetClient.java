@@ -41,7 +41,7 @@ public class SonnetClient implements GptClient{
             content.append("Start");
         }
         for (GptChatDTO chat : chatList) {
-            String message = chat.getMessage();
+            String message = chat.getMessage().replace("\"", " ");
             String username;
             if (chat.getUsername().equals("model")) {
                 username = "assistant";
@@ -95,7 +95,7 @@ public class SonnetClient implements GptClient{
 
     private static String getRequestBody(String instruction, String content) {
         int inputTokens = content.length();
-        String reformattedContent = content.replace('\n', ' ').replace("\"", " ");
+        String reformattedContent = content.replace('\n', ' ');
         // requestBody 생성
         String MAX_TOKENS = String.valueOf(inputTokens * 2 + OUTPUT_TOKENS);
         return """
