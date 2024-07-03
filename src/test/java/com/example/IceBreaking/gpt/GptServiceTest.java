@@ -36,12 +36,28 @@ public class GptServiceTest {
     @Test
     @DisplayName("대화 내용 분석 테스트")
     public void testAnalyzeChat() {
-        List<ChatEntity> chatList = chatRepository.findTop30ByTeamIdOrderByTimeAsc(8L);
+        List<ChatEntity> chatList = chatRepository.findTop30ByTeamIdOrderByTimeAsc(12L);
         List<GptChatDTO> gptChatList = new ArrayList<>();
         for (ChatEntity chat : chatList) {
             gptChatList.add(new GptChatDTO(chat.getUserName(), chat.getMessage()));
         }
-        String response = gptService.analyzeChat(gptChatList);
+        System.out.println("ChatList: " + gptChatList);
+//        String response = gptService.analyzeChat(gptChatList);
+//        System.out.println("Response: " + response);
+
+
+    }
+
+    @Test
+    @DisplayName("대화 내용 요약 테스트")
+    public void testSummarizeChat() {
+        List<ChatEntity> chatList = chatRepository.findTop30ByTeamIdOrderByTimeAsc(12L);
+        List<GptChatDTO> gptChatList = new ArrayList<>();
+        for (ChatEntity chat : chatList) {
+            gptChatList.add(new GptChatDTO(chat.getUserName(), chat.getMessage()));
+        }
+        System.out.println("ChatList: " + gptChatList);
+        String response = gptService.summarizeChat(gptChatList);
         System.out.println("Response: " + response);
 
 

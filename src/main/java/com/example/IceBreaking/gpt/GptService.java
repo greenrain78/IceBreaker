@@ -39,4 +39,14 @@ public class GptService {
         String content = "{\"role\":\"user\", \"content\": \"" + chatResult + "\"}";
         return gptClient.getResponse(instruction, content);
     }
+
+    public String summarizeChat(List<GptChatDTO> chatList) {
+        StringBuilder chatResult = new StringBuilder();
+        for (GptChatDTO chat : chatList) {
+            chatResult.append(chat.getUsername()).append(": ").append(chat.getMessage()).append("    ");
+        }
+        String instruction = "You are an expert summarizer. Your task is to create a concise and accurate summary of the following chat conversation. Capture the key points, main topics discussed, and any important outcomes or decisions made. Limit your response to no more than 3 sentences. Respond in Korean.";
+        String content = "{\"role\":\"user\", \"content\": \"" + chatResult + "\"}";
+        return gptClient.getResponse(instruction, content);
+    }
 }
