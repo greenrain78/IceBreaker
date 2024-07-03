@@ -27,6 +27,7 @@ public class AppEnvConfig {
     private String adminEmail;
 
     public void refreshSonnetAPI() {
+        log.info("Refreshing Sonnet API Key...");
         try {
             // gcloud auth print-access-token 명령 실행
             ProcessBuilder processBuilder = new ProcessBuilder();
