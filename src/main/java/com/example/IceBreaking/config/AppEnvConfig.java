@@ -51,6 +51,7 @@ public class AppEnvConfig {
             } else {
                 // 에러가 발생한 경우
                 log.error("Error: Failed to get access token - default: " + sonnetApiKey);
+                log.error("Error: " + output);
             }
         } catch (IOException | InterruptedException e) {
             log.error("Failed to get access token - default: " + sonnetApiKey, e);
