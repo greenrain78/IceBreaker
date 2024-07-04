@@ -227,7 +227,20 @@
     const getUrlParameter = (name) => new URLSearchParams(window.location.search).get(name);
     const teamId = getUrlParameter('teamId');
     const username = document.getElementById('username').value;
+    const btnSendAnalysis = document.getElementById('btnSendAnalysis');
 
+    btnSendAnalysis.addEventListener('click', async () => {
+        const url = `/chat/analysis/${teamId}`;
+        const response = await axios.get(url);
+        console.log(response.data);
+        const chatMessages = document.getElementById('chatMessages');
+        const newMessage = document.createElement('li');
+        newMessage.classList.add('chat-message');
+        newMessage.classList.add('announcement');
+        newMessage.innerHTML = `<p class="message-text"><b>announcement:</b> ${response.data}</p>`;
+        chatMessages.appendChild(newMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
     const displayAnnouncement = (settings) => {
         console.log(`settings: ${JSON.stringify(settings)}`);
         // 잔여 회수 표시
@@ -235,9 +248,12 @@
         chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사을 알려주세요.`;
         chatAnnouncements.getElementsByTagName('span')[0].innerHTML = `남은 횟수: ${settings['gptLimit']}`;
         // 대화 분석 버튼 표시
-        const btnSendAnalysis = document.getElementById('btnSendAnalysis');
         if (settings['gptLimit'] === '0') {
+
+
             btnSendAnalysis.style.display = 'inline-block';
+            // 입력부분 disable
+            document.getElementById('msg').disabled = true;
         }
     }
 

@@ -1,9 +1,7 @@
 package com.example.IceBreaking.controller;
 
-import com.example.IceBreaking.dto.ChatCreateDTO;
-import com.example.IceBreaking.dto.ChatDTO;
-import com.example.IceBreaking.dto.TeamCreateDTO;
-import com.example.IceBreaking.dto.TeamDTO;
+import com.example.IceBreaking.dto.*;
+import com.example.IceBreaking.gpt.GptService;
 import com.example.IceBreaking.service.ChatService;
 import com.example.IceBreaking.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -23,6 +22,7 @@ public class ChatController {
 
     private final ChatService chatService;
     private final TeamService teamService;
+    private final GptService gptService;
 
     @PostMapping("/chat/create/{teamId}")
     public ResponseEntity<Object> createChat(@PathVariable Long teamId, @RequestBody ChatCreateDTO chatCreateDTO) {

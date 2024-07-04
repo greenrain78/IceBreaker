@@ -5,6 +5,7 @@ import com.example.IceBreaking.dto.ChatSocketDTO;
 import com.example.IceBreaking.entity.ChatEntity;
 import com.example.IceBreaking.repository.ChatRepository;
 import com.example.IceBreaking.service.ChatService;
+import com.example.IceBreaking.service.ChatSupportService;
 import com.example.IceBreaking.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     private final SimpMessagingTemplate template;
     private final ChatService chatService;
     private final TeamService teamService;
+    private final ChatSupportService chatSupportService;
 
     @MessageMapping("/chat/message")
     public void message(ChatSocketDTO chatSocketDTO, SimpMessageHeaderAccessor headerAccessor) {
@@ -37,6 +39,8 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
                 .build();
         // chat 저장
         ChatDTO savedChatDTO = chatService.createChat(chatDTO);
+        chatSupportService.callGptChat(chatDTO.getTeamId());
+
         Map<String, Object> payload = new HashMap<>();
         payload.put("chat", savedChatDTO);
         payload.put("settings", teamService.getTeamById(chatSocketDTO.getTeamId()).getSettings());

@@ -1,15 +1,9 @@
 package com.example.IceBreaking.service;
 
 import com.example.IceBreaking.dto.ChatDTO;
-import com.example.IceBreaking.dto.GptChatDTO;
-import com.example.IceBreaking.entity.TeamEntity;
 import com.example.IceBreaking.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
