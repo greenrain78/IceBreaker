@@ -39,7 +39,8 @@ public class RoomPageController {
         TeamDTO teamDTO = teamService.getTeamById(teamId);
         model.addAttribute("team", teamDTO);
         log.info("team: " + teamDTO);
-        if (teamDTO.getTeamType().equals("welcome")) {
+        // welcome으로 시작하는
+        if (teamDTO.getTeamType().startsWith("welcome")) {
             return "/team/welcome";
         }
         return "/team/room";

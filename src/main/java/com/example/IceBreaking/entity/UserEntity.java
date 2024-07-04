@@ -1,8 +1,12 @@
 package com.example.IceBreaking.entity;
 
+import com.example.IceBreaking.utils.HashMapConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Setter
@@ -20,6 +24,14 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
+    @Convert(converter = HashMapConverter.class)
+    @Column(columnDefinition = "TEXT")
+    private Map<String, String> settings;
+
+    @PrePersist
+    protected void prePersist() {
+        this.settings = new HashMap<>();
+    }
     @Override
     public String toString() {
         return "UserEntity{" +

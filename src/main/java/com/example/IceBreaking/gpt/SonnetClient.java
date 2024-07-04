@@ -79,14 +79,28 @@ public class SonnetClient {
         log.info("Request body: {}", requestBody);
 
         // api 호출
-        Mono<String> responseMono = webClient.post()
-                .uri(getApiUrl())
-                .header("Authorization", "Bearer " + appEnv.getSonnetApiKey())
-                .header("Content-Type", "application/json")
-                .body(BodyInserters.fromValue(requestBody))
-                .retrieve()
-                .bodyToMono(String.class);
-        String response = responseMono.block();
+        String response;
+        try {
+            Mono<String> responseMono = webClient.post()
+                    .uri(getApiUrl())
+                    .header("Authorization", "Bearer " + appEnv.getSonnetApiKey())
+                    .header("Content-Type", "application/json")
+                    .body(BodyInserters.fromValue(requestBody))
+                    .retrieve()
+                    .bodyToMono(String.class);
+            response = responseMono.block();
+        } catch (Exception e) {
+            appEnv.refreshSonnetAPI();  // 오류시 api key 재발급
+            Mono<String> responseMono = webClient.post()
+                    .uri(getApiUrl())
+                    .header("Authorization", "Bearer " + appEnv.getSonnetApiKey())
+                    .header("Content-Type", "application/json")
+                    .body(BodyInserters.fromValue(requestBody))
+                    .retrieve()
+                    .bodyToMono(String.class);
+            response = responseMono.block();
+        }
+
         // json parsing candidates.parts.text
         try {
             log.debug("Response: {}", response);

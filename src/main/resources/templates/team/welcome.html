@@ -249,7 +249,7 @@
         console.log(`settings: ${JSON.stringify(settings)}`);
         // 잔여 회수 표시
         const chatAnnouncements = document.getElementById('chatAnnouncements').getElementsByTagName('div')[0];
-        chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사을 알려주세요.`;
+        chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사을 알려주세요. gpt 응답이 살짝 오래걸릴 수 있어요`;
         chatAnnouncements.getElementsByTagName('span')[0].innerHTML = `남은 횟수: ${settings['gptLimit']}`;
         // 대화 분석 버튼 표시
         if (settings['gptLimit'] === '0') {

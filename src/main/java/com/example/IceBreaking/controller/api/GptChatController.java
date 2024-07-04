@@ -5,15 +5,18 @@ import com.example.IceBreaking.dto.GptChatDTO;
 import com.example.IceBreaking.dto.TeamDTO;
 import com.example.IceBreaking.entity.ChatEntity;
 import com.example.IceBreaking.entity.TeamEntity;
+import com.example.IceBreaking.entity.UserEntity;
 import com.example.IceBreaking.gpt.GptService;
 import com.example.IceBreaking.repository.ChatRepository;
 import com.example.IceBreaking.repository.TeamRepository;
 import com.example.IceBreaking.service.ChatService;
 import com.example.IceBreaking.service.ChatSupportService;
 import com.example.IceBreaking.service.TeamService;
+import com.example.IceBreaking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,7 @@ public class GptChatController {
     private final ChatService chatService;
     private final ChatRepository chatRepository;
     private final TeamService teamService;
+    private final UserService userService;
     @GetMapping("/gpt/call/simple/{teamId}")
     public  ResponseEntity<Object> getGptChat(@PathVariable Long teamId) {
         chatSupportService.callGptChat(teamId);
@@ -39,14 +43,15 @@ public class GptChatController {
     }
     @GetMapping("/gpt/analyzer/{teamId}")
     public ResponseEntity<Object> getGptAnalyzer(@PathVariable Long teamId) {
-        log.info("GPT-3 Analyzer called: {}", teamId);
+
         String analyzerId = teamService.getSettingValue(teamId, "analyzer_id");
-        log.info("analyzer_id: {}", analyzerId);
+        log.info("GPT-3 Analyzer called: {} - analyzer_id: {}", teamId, analyzerId);
         // analyzer_id 가 있으면 기존 내용 전달
         if (analyzerId != null) {
             ChatEntity chatEntity = chatRepository.findById(Long.parseLong(analyzerId)).orElseThrow();
             return ResponseEntity.ok(ChatDTO.of(chatEntity));
         }
+        // analyzer_id 가 없으면 새로 생성
         List<GptChatDTO> chatList = chatService.showChat(teamId).stream().map(
                 chat -> new GptChatDTO(chat.getUsername(), chat.getMessage())
         ).toList();
@@ -57,8 +62,23 @@ public class GptChatController {
                 .message(result)
                 .build();
         log.info("GPT-3 Analyzer result: {}", chatDTO);
+        // chat 저장
         ChatEntity chatEntity = chatRepository.save(chatDTO.toEntity());
         teamService.updateSettings(teamId, "analyzer_id", chatEntity.getId().toString());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.setSettingValue(username, "analyzer_id", chatEntity.getId().toString());
+        return ResponseEntity.ok(ChatDTO.of(chatEntity));
+    }
+    @GetMapping("/gpt/mine/analyzer")
+    public ResponseEntity<Object> getMyGptAnalyzer() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String analyzerId = userService.getSettingValue(username, "analyzer_id");
+        log.info("GPT-3 Analyzer called: {} - analyzer_id: {}", username, analyzerId);
+        // analyzer_id 가 있으면 기존 내용 전달
+        if (analyzerId == null) {
+            return ResponseEntity.notFound().build();
+        }
+        ChatEntity chatEntity = chatRepository.findById(Long.parseLong(analyzerId)).orElseThrow();
         return ResponseEntity.ok(ChatDTO.of(chatEntity));
     }
 }
