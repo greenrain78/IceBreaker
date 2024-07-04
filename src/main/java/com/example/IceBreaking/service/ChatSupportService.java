@@ -44,13 +44,15 @@ public class ChatSupportService {
                 chatEntity -> chatList.add(new GptChatDTO(chatEntity.getUserName(), chatEntity.getMessage()))
         );
         log.info("chatList: {}", chatList);
-
+        // GPT-3 API 호출 중인 경우 대기
         if (isRunningGptChat.get(teamId) == null || !isRunningGptChat.get(teamId)) {
             try {
                 isRunningGptChat.put(teamId, true);
                 if (teamEntity.getTeamType().equals("welcome")) {
                     welcomeGptChat(teamEntity, chatList);
                 }
+            } catch (Exception e) {
+                log.error("GPT-3 API 호출 중 오류 발생", e);
             } finally {
                 isRunningGptChat.put(teamId, false);
             }
@@ -67,6 +69,7 @@ public class ChatSupportService {
 
         // GPT-3 API 호출 횟수 감소
         if (gptLimit.equals("0")) {
+            teamEntity.setTeamType("welcome_end");
             teamRepository.save(teamEntity);
         } else {
             teamEntity.getSettings().put("gptLimit", String.valueOf(Integer.parseInt(gptLimit) - 1));

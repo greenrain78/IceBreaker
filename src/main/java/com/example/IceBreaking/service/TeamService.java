@@ -82,4 +82,18 @@ public class TeamService {
         return TeamDTO.of(teamEntity);
     }
 
+    @Transactional
+    public String getSettingValue(Long id, String key) {
+        TeamEntity teamEntity = teamRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀입니다."));
+        return teamEntity.getSettings().get(key);
+    }
+
+    @Transactional
+    public void updateSettings(Long id, String key, String value) {
+        TeamEntity teamEntity = teamRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀입니다."));
+        teamEntity.getSettings().put(key, value);
+        teamRepository.save(teamEntity);
+    }
 }

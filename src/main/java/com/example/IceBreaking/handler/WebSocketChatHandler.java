@@ -39,6 +39,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
                 .build();
         // chat 저장
         ChatDTO savedChatDTO = chatService.createChat(chatDTO);
+        // 부가 기능 호출
         chatSupportService.callGptChat(chatDTO.getTeamId());
 
         Map<String, Object> payload = new HashMap<>();

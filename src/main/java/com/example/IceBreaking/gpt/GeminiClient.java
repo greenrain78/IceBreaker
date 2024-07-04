@@ -15,7 +15,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GeminiClient implements GptClient {
+public class GeminiClient {
     private final AppEnvConfig appEnv;
     private final WebClient webClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -43,7 +43,6 @@ public class GeminiClient implements GptClient {
 
     }
 
-    @Override
     public String getResponse(String instruction, String content) {
         // json 구성
         String requestBody = """
@@ -70,7 +69,6 @@ public class GeminiClient implements GptClient {
         }
     }
 
-    @Override
     public String getResponse(String requestBody) {
         return null;
     }

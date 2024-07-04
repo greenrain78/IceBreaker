@@ -54,7 +54,7 @@ public class AppEnvConfig {
                 log.error("Error: " + output);
             }
         } catch (IOException | InterruptedException e) {
-            log.error("Failed to get access token - default: " + sonnetApiKey, e);
+            log.error("Failed to get access token - default: " + sonnetApiKey);
         }
     }
     @PostConstruct

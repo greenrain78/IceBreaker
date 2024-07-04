@@ -15,11 +15,11 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SonnetClient implements GptClient{
+public class SonnetClient {
     private final AppEnvConfig appEnv;
     private final WebClient webClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final int OUTPUT_TOKENS = 100;
+    private static final int OUTPUT_TOKENS = 1000;
 
     private String getApiUrl() {
         String projectId = "greenrain";
@@ -30,7 +30,6 @@ public class SonnetClient implements GptClient{
                 location, projectId, location, modelId);
     }
 
-    @Override
     public String callGptSimple(String instruction, List<GptChatDTO> chatList) {
         StringBuilder chatContent = new StringBuilder();
         String lastUsername = "user"; // 첫 대화는 항상 user 로 해야 한다고 api 문서에 명시되어 있음
@@ -41,7 +40,7 @@ public class SonnetClient implements GptClient{
             content.append("Start");
         }
         for (GptChatDTO chat : chatList) {
-            String message = chat.getMessage().replace("\"", " ");
+            String message = chat.getMessage().replace("\"", " ").replace(",", " ");
             String username;
             if (chat.getUsername().equals("model")) {
                 username = "assistant";
@@ -60,17 +59,23 @@ public class SonnetClient implements GptClient{
             content.append(message);
         }
         chatContent.append("{\"role\":\"").append(lastUsername).append("\", \"content\": \"").append(content).append("\"}");
-        String requestBody = getRequestBody(instruction, chatContent.toString());
-        return getResponse(requestBody);
+        // requestBody 생성
+
+        return getResponse(instruction, chatContent.toString());
     }
 
-    @Override
+
     public String getResponse(String instruction, String content) {
-        return null;
-    }
+        String reformattedContent = content.replace('\n', ' ');
 
-    @Override
-    public String getResponse(String requestBody) {
+        String requestBody = """
+                {
+                  "anthropic_version": "vertex-2023-10-16",
+                  "messages": [%s],
+                  "system": "%s",
+                  "max_tokens": %s
+                }""".formatted(reformattedContent, instruction, OUTPUT_TOKENS);
+
         log.info("Request body: {}", requestBody);
 
         // api 호출
@@ -91,19 +96,5 @@ public class SonnetClient implements GptClient{
             log.error("Response: {}", response);
             throw new RuntimeException("Parsing Error");
         }
-    }
-
-    private static String getRequestBody(String instruction, String content) {
-        int inputTokens = content.length();
-        String reformattedContent = content.replace('\n', ' ');
-        // requestBody 생성
-        String MAX_TOKENS = String.valueOf(inputTokens * 2 + OUTPUT_TOKENS);
-        return """
-                {
-                  "anthropic_version": "vertex-2023-10-16",
-                  "messages": [%s],
-                  "system": "%s",
-                  "max_tokens": %s
-                }""".formatted(reformattedContent, instruction, MAX_TOKENS);
     }
 }

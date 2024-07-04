@@ -229,17 +229,21 @@
     const username = document.getElementById('username').value;
     const btnSendAnalysis = document.getElementById('btnSendAnalysis');
 
+    let analysisContent = "";
+    const displayAnalysis = (analysis) => {
+        alert(analysis)
+        // const chatAnnouncements = document.getElementById('chatAnnouncements').getElementsByTagName('div')[0];
+        // chatAnnouncements.getElementsByTagName('p')[0].innerHTML = `${username}님의 관심사 분석 결과\n${analysis}`;
+    }
     btnSendAnalysis.addEventListener('click', async () => {
-        const url = `/chat/analysis/${teamId}`;
+        if (analysisContent !== "") {
+            displayAnalysis(analysisContent);
+        }
+        const url = `/gpt/analyzer/${teamId}`;
         const response = await axios.get(url);
         console.log(response.data);
-        const chatMessages = document.getElementById('chatMessages');
-        const newMessage = document.createElement('li');
-        newMessage.classList.add('chat-message');
-        newMessage.classList.add('announcement');
-        newMessage.innerHTML = `<p class="message-text"><b>announcement:</b> ${response.data}</p>`;
-        chatMessages.appendChild(newMessage);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        analysisContent = response.data['message'];
+        displayAnalysis(analysisContent);
     });
     const displayAnnouncement = (settings) => {
         console.log(`settings: ${JSON.stringify(settings)}`);
@@ -249,8 +253,6 @@
         chatAnnouncements.getElementsByTagName('span')[0].innerHTML = `남은 횟수: ${settings['gptLimit']}`;
         // 대화 분석 버튼 표시
         if (settings['gptLimit'] === '0') {
-
-
             btnSendAnalysis.style.display = 'inline-block';
             // 입력부분 disable
             document.getElementById('msg').disabled = true;
