@@ -150,6 +150,7 @@
     <!-- 세션에 로그인 정보가 있을 때 -->
     <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/logout">로그아웃</a>
     <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/new?type=welcome">관심사 재설정</a>
+    <a th:if="${role != 'ROLE_ANONYMOUS'}" id="analysis">관심사 분석</a>
 </div>
 
 <h2>어색한 팀플 시작 얼음깨기와 함께!</h2>
@@ -172,6 +173,19 @@
     <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/create">팀플방 생성</a>
     <a th:if="${role != 'ROLE_ANONYMOUS'}" href="/team/mine">참여중인 채팅방</a>
 </div>
+
+<script>
+    document.getElementById('analysis').addEventListener('click', async function () {
+        const response = await fetch('/gpt/mine/analyzer', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        const data = await response.json();
+        alert(data.message);
+    });
+</script>
 
 </body>
 </html>
